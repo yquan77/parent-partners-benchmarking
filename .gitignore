@@ -1,0 +1,4 @@
+.DS_Store
+node_modules/
+assets/fonts/*.ttf
+!assets/fonts/*.subset.woff2

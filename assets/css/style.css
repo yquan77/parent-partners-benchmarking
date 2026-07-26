@@ -1,0 +1,306 @@
+/* ===================================================================
+   Design tokens
+   =================================================================== */
+:root{
+  --paper:      #F7F2EA;
+  --paper-dim:  #EFE7D8;
+  --ink:        #2E2419;
+  --ink-soft:   #5B4E3E;
+  --glow:       #C6F135;
+  --glow-dim:   #9FC42A;
+  --clay:       #C4633A;
+  --academic:   #6B7A8F;
+  --academic-bg:#E7EBEF;
+  --paper-shadow: 0 18px 40px -18px rgba(46,36,25,.35), 0 2px 6px rgba(46,36,25,.12);
+
+  --font-hand:  'Ma Shan Zheng', cursive;
+  --font-body:  'Noto Sans SC', -apple-system, sans-serif;
+  --font-data:  'Manrope', -apple-system, sans-serif;
+
+  --slide-pad: clamp(28px, 5vw, 96px);
+}
+
+@font-face{
+  font-family:'Ma Shan Zheng';
+  src: url('../fonts/MaShanZheng.subset.woff2') format('woff2');
+  font-weight:400; font-display:swap;
+}
+@font-face{
+  font-family:'Noto Sans SC';
+  src: url('../fonts/NotoSansSC-400.subset.woff2') format('woff2');
+  font-weight:400; font-display:swap;
+}
+@font-face{
+  font-family:'Noto Sans SC';
+  src: url('../fonts/NotoSansSC-700.subset.woff2') format('woff2');
+  font-weight:700; font-display:swap;
+}
+@font-face{
+  font-family:'Manrope';
+  src: url('../fonts/Manrope-500.subset.woff2') format('woff2');
+  font-weight:500; font-display:swap;
+}
+@font-face{
+  font-family:'Manrope';
+  src: url('../fonts/Manrope-800.subset.woff2') format('woff2');
+  font-weight:800; font-display:swap;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html,body{ height:100%; }
+body{
+  font-family:var(--font-body);
+  background:var(--ink);
+  color:var(--ink);
+  overflow:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ===================================================================
+   Deck shell
+   =================================================================== */
+#deck{
+  position:relative;
+  width:100vw; height:100vh;
+}
+.slide{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  justify-content:center;
+  background:var(--paper);
+  opacity:0; visibility:hidden;
+  transform:translateY(24px);
+  transition:opacity .5s ease, transform .6s cubic-bezier(.16,1,.3,1), visibility 0s linear .5s;
+  padding:var(--slide-pad);
+}
+.slide.active{
+  opacity:1; visibility:visible; transform:translateY(0);
+  transition:opacity .5s ease, transform .6s cubic-bezier(.16,1,.3,1), visibility 0s;
+  z-index:2;
+}
+.slide.dark{ background:var(--ink); color:var(--paper); }
+.slide.dark .eyebrow{ color:var(--glow); }
+.slide-inner{ max-width:1120px; margin:0 auto; width:100%; }
+
+/* subtle paper grain on every slide */
+.slide::before{
+  content:''; position:absolute; inset:0; pointer-events:none;
+  opacity:.05; mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.eyebrow{
+  font-family:var(--font-data); font-weight:700; letter-spacing:.14em;
+  text-transform:uppercase; font-size:13px; color:var(--clay);
+  margin-bottom:18px; display:flex; align-items:center; gap:10px;
+}
+.eyebrow::before{ content:''; width:22px; height:2px; background:currentColor; display:inline-block; }
+
+h1,h2,h3{ font-weight:700; line-height:1.25; }
+.headline{
+  font-size:clamp(30px, 4.4vw, 58px); font-weight:700; line-height:1.28;
+  letter-spacing:-.01em;
+}
+.headline .hand{ font-family:var(--font-hand); font-weight:400; color:var(--clay); }
+.slide.dark .headline .hand{ color:var(--glow); }
+
+.body-lg{ font-size:clamp(17px,1.6vw,22px); line-height:1.85; color:var(--ink-soft); max-width:70ch; }
+.slide.dark .body-lg{ color:#D9D2C2; }
+
+/* ===================================================================
+   Handwritten sticky-note quotes
+   =================================================================== */
+.sticky{
+  position:relative;
+  /* default: refined paper gradient. Drop a real photographed paper texture at
+     assets/img/paper-texture.jpg and add class="sticky sticky--photo" to upgrade. */
+  background:
+    radial-gradient(140% 120% at 15% 0%, rgba(255,255,255,.9), rgba(255,251,240,0) 55%),
+    linear-gradient(168deg, #FFFBF0 0%, #F3ECD8 100%);
+  border-radius:3px;
+  box-shadow:var(--paper-shadow);
+  padding:28px 32px;
+  max-width:560px;
+  transform:rotate(var(--tilt, -1.4deg));
+}
+.sticky--photo{
+  background:
+    linear-gradient(rgba(255,251,240,.5), rgba(255,251,240,.5)),
+    url('../img/paper-texture.jpg') center/cover;
+}
+.sticky::after{
+  content:''; position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-3deg);
+  width:64px; height:24px; border-radius:2px;
+  background:rgba(198,241,53,.55);
+  box-shadow:0 3px 6px rgba(0,0,0,.15);
+}
+.sticky p{
+  font-family:var(--font-hand); font-size:clamp(20px,2vw,26px); line-height:1.7;
+  color:#2A2115;
+}
+.sticky cite{
+  display:block; margin-top:14px; font-style:normal; font-family:var(--font-data);
+  font-weight:700; font-size:13px; letter-spacing:.06em; color:var(--clay);
+}
+
+/* academic citation chip */
+.cite-chip{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family:var(--font-data); font-weight:700; font-size:11.5px;
+  letter-spacing:.03em; color:var(--academic);
+  background:var(--academic-bg); border-radius:100px;
+  padding:4px 11px 4px 9px; margin:2px 4px;
+  vertical-align:middle; white-space:nowrap;
+}
+.cite-chip::before{ content:'§'; font-weight:800; }
+.slide.dark .cite-chip{ background:rgba(107,122,143,.28); color:#B9C6D6; }
+
+/* ===================================================================
+   Big number / stat display
+   =================================================================== */
+.stat-num{
+  font-family:var(--font-data); font-weight:800; letter-spacing:-.03em;
+  font-size:clamp(80px,13vw,190px); line-height:.9;
+}
+.stat-label{ font-family:var(--font-data); font-weight:700; font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft); margin-top:10px; }
+.slide.dark .stat-label{ color:#B9AF98; }
+
+.arrow-flow{ display:flex; align-items:center; gap:clamp(20px,4vw,56px); }
+.arrow-flow .arrow{ font-size:clamp(28px,3vw,44px); color:var(--clay); }
+
+/* ===================================================================
+   Photo placeholder (until real photos are dropped in)
+   =================================================================== */
+.photo-slot{
+  position:relative; border-radius:10px; overflow:hidden;
+  background:repeating-linear-gradient(135deg, var(--paper-dim), var(--paper-dim) 12px, #E4DAC6 12px, #E4DAC6 24px);
+  border:2px dashed #C9BC9E;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  color:#9C8E72; font-family:var(--font-data); font-weight:700; font-size:13px;
+  padding:20px; line-height:1.6;
+}
+.photo-slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
+.photo-slot.has-img{ border:none; background:none; }
+.photo-slot.has-img img{ display:block; }
+.photo-slot.has-img .placeholder-label{ display:none; }
+
+/* full-bleed photo background slide */
+.slide.photo-bg{ padding:0; justify-content:flex-end; }
+.slide.photo-bg .bg-layer{ position:absolute; inset:0; }
+.slide.photo-bg .bg-layer img{ width:100%; height:100%; object-fit:cover; }
+.slide.photo-bg .scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(20,15,8,.05) 0%, rgba(20,15,8,.78) 78%);
+}
+.slide.photo-bg .content{ position:relative; z-index:2; padding:var(--slide-pad); color:var(--paper); }
+.slide.photo-bg .content .headline{ color:var(--paper); }
+
+/* ===================================================================
+   Method step marker
+   =================================================================== */
+.step-mark{
+  font-family:var(--font-data); font-weight:800; font-size:15px; color:var(--paper);
+  background:var(--ink); border-radius:100px; padding:6px 16px;
+  display:inline-flex; align-items:center; gap:8px; margin-bottom:20px;
+}
+.step-mark b{ color:var(--glow-dim); }
+
+/* ===================================================================
+   Glow-shield signature moment (method 4)
+   =================================================================== */
+.glow-stage{
+  position:relative; width:100%; height:100%;
+  background:#0D0B08;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.glow-stage .pre-text{
+  position:absolute; color:#EDE7D6; font-size:clamp(20px,2.6vw,30px);
+  font-family:var(--font-body); font-weight:700; text-align:center; max-width:70%;
+  opacity:1; transition:opacity .4s ease;
+}
+.glow-stage.flashed .pre-text{ opacity:0; }
+.flash-layer{
+  position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
+}
+.glow-stage.flashed .flash-layer{ animation:flashPop .55s ease-out forwards; }
+@keyframes flashPop{
+  0%{ opacity:0; } 8%{ opacity:1; } 100%{ opacity:0; }
+}
+.shield-grid{
+  position:absolute; inset:0; display:grid; place-items:center;
+  grid-template-columns:repeat(4,1fr); gap:clamp(10px,2vw,26px);
+  padding:8%; opacity:0; transform:scale(.94);
+  transition:opacity .5s ease .1s, transform .6s cubic-bezier(.16,1,.3,1) .1s;
+}
+.glow-stage.flashed .shield-grid{ opacity:1; transform:scale(1); }
+.shield{
+  width:clamp(52px,7vw,110px); aspect-ratio:1/1.15;
+  clip-path:polygon(50% 0%,100% 20%,100% 60%,50% 100%,0% 60%,0% 20%);
+  background:var(--glow);
+  box-shadow:0 0 18px 4px rgba(198,241,53,.85), 0 0 46px 10px rgba(198,241,53,.35);
+  animation:shieldPulse 2.4s ease-in-out infinite;
+}
+.shield:nth-child(3n){ animation-delay:.3s; }
+.shield:nth-child(4n){ animation-delay:.6s; }
+.shield:nth-child(5n){ animation-delay:.9s; }
+@keyframes shieldPulse{
+  0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.35); }
+}
+.glow-stage .caption{
+  position:absolute; bottom:9%; color:var(--glow); font-family:var(--font-hand);
+  font-size:clamp(24px,3vw,38px); opacity:0; transition:opacity .5s ease .5s;
+}
+.glow-stage.flashed .caption{ opacity:1; }
+
+/* ===================================================================
+   Nav UI
+   =================================================================== */
+#nav{
+  position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+  display:flex; gap:8px; z-index:50;
+}
+#nav .dot{
+  width:7px; height:7px; border-radius:50%; background:rgba(46,36,25,.22);
+  cursor:pointer; transition:all .25s ease;
+}
+#nav .dot.on{ background:var(--clay); width:22px; border-radius:5px; }
+#progress{
+  position:fixed; top:0; left:0; height:3px; background:var(--clay); z-index:60;
+  transition:width .4s ease;
+}
+#slide-counter{
+  position:fixed; top:20px; right:26px; font-family:var(--font-data); font-weight:700;
+  font-size:12px; color:var(--ink-soft); z-index:50; letter-spacing:.06em;
+}
+.slide.dark ~ #slide-counter{ color:#cfc7b3; }
+.tap-zone{ position:fixed; top:0; bottom:0; width:18%; z-index:40; cursor:pointer; }
+#tap-prev{ left:0; } #tap-next{ right:0; }
+
+/* ===================================================================
+   Interactive rating slide
+   =================================================================== */
+.qr-card{
+  background:#fff; border-radius:16px; padding:22px; box-shadow:var(--paper-shadow);
+  display:inline-flex; flex-direction:column; align-items:center; gap:10px;
+}
+.qr-card canvas,.qr-card img{ width:168px; height:168px; }
+.qr-card span{ font-family:var(--font-data); font-weight:700; font-size:12px; color:var(--ink-soft); }
+
+.live-result{ display:flex; align-items:baseline; gap:16px; }
+.live-avg{ font-family:var(--font-data); font-weight:800; font-size:clamp(60px,9vw,120px); color:var(--clay); }
+.live-stars{ font-size:clamp(24px,3vw,34px); letter-spacing:2px; color:var(--glow-dim); text-shadow:0 0 1px rgba(0,0,0,.15); }
+.live-count{ font-family:var(--font-data); font-size:14px; color:var(--ink-soft); }
+
+/* ===================================================================
+   Responsive
+   =================================================================== */
+@media (max-width: 760px){
+  :root{ --slide-pad:20px; }
+  .arrow-flow{ flex-direction:column; gap:12px; }
+  .shield-grid{ grid-template-columns:repeat(3,1fr); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+}

@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>投票 —— 你现在几分想回去试试看？</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  body{ overflow:auto; background:var(--paper); }
+  .vote-wrap{
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:32px 24px; text-align:center;
+  }
+  .stars-input{ display:flex; gap:10px; margin:34px 0; }
+  .stars-input button{
+    width:56px; height:56px; border:none; background:none; font-size:44px; line-height:1;
+    cursor:pointer; color:#D9D0B8; transition:transform .15s ease, color .15s ease; padding:0;
+  }
+  .stars-input button.on{ color:var(--clay); transform:scale(1.12); }
+  #submit-btn{
+    font-family:var(--font-data); font-weight:800; font-size:16px; color:#fff;
+    background:var(--ink); border:none; border-radius:100px; padding:16px 42px;
+    cursor:pointer; opacity:.4; pointer-events:none; transition:opacity .2s ease;
+  }
+  #submit-btn.ready{ opacity:1; pointer-events:auto; }
+  #status{ margin-top:20px; font-family:var(--font-data); font-size:14px; color:var(--ink-soft); min-height:20px; }
+  .done .stars-input, .done #submit-btn{ display:none; }
+  .thanks{ display:none; }
+  .done .thanks{ display:block; }
+</style>
+</head>
+<body>
+  <div class="vote-wrap" id="wrap">
+    <div class="eyebrow" style="justify-content:center;">现场互动</div>
+    <p class="headline" style="font-size:clamp(24px,7vw,32px);">听完这些，<br>你现在几分想回去试试看？</p>
+
+    <div class="stars-input" id="stars">
+      <button data-v="1">★</button>
+      <button data-v="2">★</button>
+      <button data-v="3">★</button>
+      <button data-v="4">★</button>
+      <button data-v="5">★</button>
+    </div>
+
+    <button id="submit-btn">送出我的一票</button>
+    <div id="status"></div>
+
+    <div class="thanks">
+      <p class="headline hand" style="font-size:clamp(34px,9vw,54px);">谢谢你的一票</p>
+      <p class="body-lg" style="margin-top:10px;">回到大屏幕，看看大家的平均分吧。</p>
+    </div>
+  </div>
+
+<script src="../assets/js/supabase-config.js"></script>
+<script src="../assets/js/ratings.js"></script>
+<script>
+  let picked = 0;
+  const buttons = Array.from(document.querySelectorAll("#stars button"));
+  const submitBtn = document.getElementById("submit-btn");
+  const status = document.getElementById("status");
+  const wrap = document.getElementById("wrap");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      picked = parseInt(btn.dataset.v, 10);
+      buttons.forEach(b => b.classList.toggle("on", parseInt(b.dataset.v, 10) <= picked));
+      submitBtn.classList.add("ready");
+    });
+  });
+
+  submitBtn.addEventListener("click", async () => {
+    if (!picked) return;
+    submitBtn.classList.remove("ready");
+    status.textContent = "送出中…";
+    try {
+      await Ratings.submit(picked);
+      wrap.classList.add("done");
+    } catch (e) {
+      status.textContent = "网络好像不太顺，再点一次试试？";
+      submitBtn.classList.add("ready");
+    }
+  });
+</script>
+</body>
+</html>

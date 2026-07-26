@@ -33,7 +33,7 @@
   // ---- per-slide enter/leave behaviour --------------------------------
   function onEnter(slide) {
     if (slide.querySelector(".stat-num[data-count-to]")) animateCounts(slide);
-    if (slide.classList.contains("glow-stage-wrap")) triggerGlow(slide);
+    if (slide.classList.contains("uv-reveal")) triggerReveal(slide);
     if (slide.dataset.role === "live-results") startLiveResults(slide);
   }
   function onLeave(slide) {
@@ -58,10 +58,11 @@
     });
   }
 
-  function triggerGlow(slide) {
-    const stage = slide.querySelector(".glow-stage");
-    if (!stage || stage.classList.contains("flashed")) return;
-    setTimeout(() => stage.classList.add("flashed"), 550);
+  // lights-out → UV flash → afterglow, layered over the full-bleed photo
+  function triggerReveal(slide) {
+    if (slide.dataset.lit === "1") return;
+    slide.dataset.lit = "1";
+    setTimeout(() => slide.classList.add("lit"), 1400);
   }
 
   async function startLiveResults(slide) {

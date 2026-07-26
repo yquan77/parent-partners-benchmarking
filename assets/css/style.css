@@ -82,6 +82,47 @@ body{
 .slide.dark .eyebrow{ color:var(--glow); }
 .slide-inner{ max-width:1120px; margin:0 auto; width:100%; }
 
+/* ---- asymmetric composition helpers (whitespace as tension) --------- */
+/* content hugs the lower-left, leaving a big empty upper-right field */
+.slide--anchor-bl{ justify-content:flex-end; }
+.slide--anchor-bl .slide-inner{ margin:0 auto 4vh 0; max-width:min(1000px, 78vw); }
+/* vertically centred, but flush left (used by the number slides) */
+.slide--left .slide-inner{ margin-left:0; margin-right:auto; max-width:min(1040px,80vw); }
+/* content sits high-left */
+.slide--anchor-tl{ justify-content:flex-start; padding-top:min(18vh, 180px); }
+.slide--anchor-tl .slide-inner{ margin-left:0; margin-right:auto; max-width:min(980px,76vw); }
+/* content pushed right, empty left */
+.slide--anchor-r{ align-items:flex-end; }
+.slide--anchor-r .slide-inner{ margin-right:0; margin-left:auto; max-width:min(920px,72vw); text-align:right; }
+.slide--anchor-r .lead,.slide--anchor-r .hand-lead,.slide--anchor-r .sub{ margin-left:auto; }
+.slide--anchor-r .eyebrow{ justify-content:flex-end; }
+.slide--anchor-r .eyebrow::before{ display:none; }
+.slide--anchor-r .eyebrow::after{ content:''; width:22px; height:2px; background:currentColor; }
+
+/* ---- dramatic entrances, only on transition slides ----------------- */
+.anim{ opacity:0; }
+.slide.active .anim{ animation:riseIn .85s cubic-bezier(.16,1,.3,1) forwards; }
+.slide.active .anim.d1{ animation-delay:.12s; }
+.slide.active .anim.d2{ animation-delay:.30s; }
+.slide.active .anim.d3{ animation-delay:.52s; }
+@keyframes riseIn{
+  from{ opacity:0; transform:translateY(26px); filter:blur(14px); }
+  to  { opacity:1; transform:none;             filter:blur(0); }
+}
+/* focus-pull: blur -> razor sharp, for the single key line */
+.slide.active .anim-focus{ animation:focusPull 1.25s cubic-bezier(.2,.8,.2,1) forwards; }
+@keyframes focusPull{
+  from{ opacity:0; filter:blur(26px); letter-spacing:.16em; transform:scale(1.04); }
+  60% { opacity:1; }
+  to  { opacity:1; filter:blur(0);    letter-spacing:normal; transform:scale(1); }
+}
+/* lights-up: dark to bright */
+.slide.active .anim-ignite{ animation:ignite 1.1s ease-out forwards; }
+@keyframes ignite{
+  from{ opacity:0; filter:brightness(.15) blur(8px); }
+  to  { opacity:1; filter:brightness(1)   blur(0); }
+}
+
 /* subtle paper grain on every slide */
 .slide::before{
   content:''; position:absolute; inset:0; pointer-events:none;
@@ -97,15 +138,64 @@ body{
 .eyebrow::before{ content:''; width:22px; height:2px; background:currentColor; display:inline-block; }
 
 h1,h2,h3{ font-weight:700; line-height:1.25; }
-.headline{
-  font-size:clamp(30px, 4.4vw, 58px); font-weight:700; line-height:1.28;
-  letter-spacing:-.01em;
-}
-.headline .hand{ font-family:var(--font-hand); font-weight:400; color:var(--clay); }
-.slide.dark .headline .hand{ color:var(--glow); }
 
-.body-lg{ font-size:clamp(17px,1.6vw,22px); line-height:1.85; color:var(--ink-soft); max-width:70ch; }
-.slide.dark .body-lg{ color:#D9D2C2; }
+/* -------------------------------------------------------------------
+   TYPE HIERARCHY — strictly three levels, one LEVEL-1 per slide.
+   L1 .lead   : the single sentence this slide must be remembered for.
+   L2 .sub    : supporting prose — ~38% of L1, muted ink-soft.
+   L3 .micro  : citations, attributions, footnotes.
+   ------------------------------------------------------------------- */
+.lead{
+  font-size:clamp(38px, 5.8vw, 86px); font-weight:700; line-height:1.18;
+  letter-spacing:-.025em; color:var(--ink); max-width:19ch;
+  text-wrap:balance;
+}
+.lead--sm{ font-size:clamp(30px,4vw,56px); max-width:24ch; line-height:1.26; }
+.slide.dark .lead{ color:var(--paper); }
+.lead--center{ margin-left:auto; margin-right:auto; text-align:center; }
+.lead--wide{ max-width:30ch; }
+
+/* handwriting = the punch word/phrase of the ONE level-1 line.
+   Always larger than surrounding type, always an accent colour. */
+.hand{
+  font-family:var(--font-hand); font-weight:400; color:var(--clay);
+  font-size:1.42em; line-height:1.05; letter-spacing:.01em;
+}
+.slide.dark .hand{ color:var(--glow); }
+/* Handwriting scale — pick by LENGTH of the phrase, so it always stays
+   at least ~1.6x the body around it without ever overflowing:
+     --xl  : 2–6  字（如「教育合伙人」「谢谢大家」）
+     (base): 7–14 字
+     --sm  : 15+  字（长金句） */
+.hand-lead{
+  font-family:var(--font-hand); font-weight:400; color:var(--clay);
+  font-size:clamp(40px,5.6vw,84px); line-height:1.32; letter-spacing:.015em;
+  max-width:14em; text-wrap:balance;
+}
+.hand-lead--xl{ font-size:clamp(64px,10.5vw,180px); line-height:1.14; max-width:7em; }
+.hand-lead--sm{ font-size:clamp(32px,4.3vw,64px); line-height:1.42; max-width:16em; }
+.slide.dark .hand-lead{ color:var(--glow); }
+.hand-lead--center{ margin-left:auto; margin-right:auto; text-align:center; }
+
+.sub{
+  font-size:clamp(15px,1.32vw,19px); line-height:1.9; color:var(--ink-soft);
+  max-width:56ch; font-weight:400;
+}
+.slide.dark .sub{ color:#B9AF98; }
+.sub--center{ margin-left:auto; margin-right:auto; text-align:center; }
+.sub b{ font-weight:700; color:var(--ink); }
+.slide.dark .sub b{ color:#E8E1D0; }
+
+.micro{
+  font-family:var(--font-data); font-weight:500; font-size:12.5px;
+  letter-spacing:.03em; line-height:1.7; color:#8C7F6B; max-width:68ch;
+}
+.slide.dark .micro{ color:#8E846F; }
+
+/* legacy aliases kept so nothing silently breaks */
+.headline{ font-size:clamp(32px,4.6vw,62px); font-weight:700; line-height:1.26; letter-spacing:-.015em; }
+.body-lg{ font-size:clamp(15px,1.32vw,19px); line-height:1.9; color:var(--ink-soft); max-width:56ch; }
+.slide.dark .body-lg{ color:#B9AF98; }
 
 /* ===================================================================
    Handwritten sticky-note quotes
@@ -119,8 +209,8 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
     linear-gradient(168deg, #FFFBF0 0%, #F3ECD8 100%);
   border-radius:3px;
   box-shadow:var(--paper-shadow);
-  padding:28px 32px;
-  max-width:560px;
+  padding:clamp(30px,4vw,52px) clamp(32px,4.4vw,60px);
+  max-width:min(820px, 76vw);
   transform:rotate(var(--tilt, -1.4deg));
 }
 .sticky--photo{
@@ -130,12 +220,13 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 }
 .sticky::after{
   content:''; position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-3deg);
-  width:64px; height:24px; border-radius:2px;
+  width:clamp(72px,9vw,120px); height:clamp(24px,2.4vw,32px); border-radius:2px;
   background:rgba(198,241,53,.55);
   box-shadow:0 3px 6px rgba(0,0,0,.15);
 }
+/* on a quote slide the handwriting IS the level-1 element */
 .sticky p{
-  font-family:var(--font-hand); font-size:clamp(20px,2vw,26px); line-height:1.7;
+  font-family:var(--font-hand); font-size:clamp(26px,3.1vw,46px); line-height:1.58;
   color:#2A2115;
 }
 .sticky cite{
@@ -169,31 +260,98 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .arrow-flow .arrow{ font-size:clamp(28px,3vw,44px); color:var(--clay); }
 
 /* ===================================================================
-   Photo placeholder (until real photos are dropped in)
+   FULL-BLEED PHOTO SLIDE  (the only photo component in this deck)
+   -------------------------------------------------------------------
+   HOW TO DROP IN A REAL PHOTO — two edits, both in index.html:
+     1. put the file in  assets/img/
+     2. on the <section>: set the CSS variable and remove `awaiting`
+          BEFORE  <section class="slide photo-bg awaiting" style="--focal:50% 40%">
+          AFTER   <section class="slide photo-bg"
+                           style="--photo:url('assets/img/xxx.jpg'); --focal:50% 40%">
+   `--focal` controls which part of the photo stays visible when cropped
+   (background-position), e.g. `50% 30%` keeps faces near the top in frame.
+   Nothing else needs to change: the scrim, the text and the animation
+   all sit on top of whatever the background is.
    =================================================================== */
-.photo-slot{
-  position:relative; border-radius:10px; overflow:hidden;
-  background:repeating-linear-gradient(135deg, var(--paper-dim), var(--paper-dim) 12px, #E4DAC6 12px, #E4DAC6 24px);
-  border:2px dashed #C9BC9E;
-  display:flex; align-items:center; justify-content:center; text-align:center;
-  color:#9C8E72; font-family:var(--font-data); font-weight:700; font-size:13px;
-  padding:20px; line-height:1.6;
+.slide.photo-bg{ padding:0; justify-content:flex-end; overflow:hidden; }
+.slide.photo-bg .bg-layer{
+  position:absolute; inset:0;
+  background-image:var(--photo, none);
+  background-size:cover;
+  background-position:var(--focal, 50% 50%);
+  transform:scale(1.06);
+  transition:transform 6s ease-out;
 }
-.photo-slot img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:none; }
-.photo-slot.has-img{ border:none; background:none; }
-.photo-slot.has-img img{ display:block; }
-.photo-slot.has-img .placeholder-label{ display:none; }
+.slide.photo-bg.active .bg-layer{ transform:scale(1); }
 
-/* full-bleed photo background slide */
-.slide.photo-bg{ padding:0; justify-content:flex-end; }
-.slide.photo-bg .bg-layer{ position:absolute; inset:0; }
-.slide.photo-bg .bg-layer img{ width:100%; height:100%; object-fit:cover; }
+/* --- the "photo is coming" state: a full-screen, composed placeholder,
+       never a small dashed box ------------------------------------- */
+.slide.photo-bg.awaiting .bg-layer{
+  background-image:
+    radial-gradient(90% 70% at 76% 16%, rgba(233,178,96,.34), transparent 64%),
+    radial-gradient(120% 95% at 16% 92%, rgba(196,99,58,.46), transparent 66%),
+    linear-gradient(150deg, #8A6A45 0%, #5A4530 40%, #2A2015 100%);
+}
+.slide.photo-bg.awaiting .bg-layer::after{
+  content:''; position:absolute; inset:0; opacity:.16; mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+/* the frame marker — reads as an intentional art-direction card */
+/* sits in the empty upper-right field, clear of the text block below-left */
+.photo-await{
+  position:absolute; z-index:3; top:var(--slide-pad); right:var(--slide-pad);
+  width:min(360px,42vw); text-align:left; color:#EDE6D6;
+  padding:22px 22px 20px;
+  border:1px solid rgba(237,230,214,.30);
+  background:rgba(18,13,6,.34);
+  backdrop-filter:blur(3px);
+}
+.slide.photo-bg:not(.awaiting) .photo-await{ display:none; }
+.photo-await .tag{
+  font-family:var(--font-data); font-weight:800; font-size:11px; letter-spacing:.34em;
+  text-transform:uppercase; color:var(--glow); display:block; margin-bottom:14px;
+}
+.photo-await .what{
+  font-family:var(--font-body); font-weight:700; font-size:15px;
+  line-height:1.7; color:#F2ECDD;
+}
+.photo-await .how{
+  margin-top:12px; padding-top:10px; border-top:1px solid rgba(237,230,214,.18);
+  font-family:var(--font-data); font-size:10.5px; letter-spacing:.02em; color:#B3A68D; line-height:1.65;
+}
+.photo-await .how b{ color:var(--glow); font-weight:800; }
+/* corner ticks, so the empty frame still feels composed */
+.photo-await::before,.photo-await::after{
+  content:''; position:absolute; width:16px; height:16px; border:2px solid var(--glow); opacity:.8;
+}
+.photo-await::before{ top:-1px; left:-1px; border-right:0; border-bottom:0; }
+.photo-await::after{ bottom:-1px; right:-1px; border-left:0; border-top:0; }
+
 .slide.photo-bg .scrim{
   position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(20,15,8,.05) 0%, rgba(20,15,8,.78) 78%);
+  background:
+    linear-gradient(180deg, rgba(14,10,5,.55) 0%, rgba(14,10,5,.12) 34%, rgba(14,10,5,.86) 82%),
+    linear-gradient(90deg, rgba(14,10,5,.62) 0%, rgba(14,10,5,0) 58%);
 }
-.slide.photo-bg .content{ position:relative; z-index:2; padding:var(--slide-pad); color:var(--paper); }
-.slide.photo-bg .content .headline{ color:var(--paper); }
+.slide.photo-bg .content{
+  position:relative; z-index:2; padding:var(--slide-pad);
+  color:var(--paper); width:100%; max-width:1120px; margin:0 auto;
+}
+.slide.photo-bg .content .lead,
+.slide.photo-bg .content .headline{ color:#FBF7EE; text-shadow:0 2px 24px rgba(0,0,0,.5); }
+.slide.photo-bg .content .sub{ color:#D6CDBA; text-shadow:0 1px 12px rgba(0,0,0,.6); }
+.slide.photo-bg .content .sub b,
+.slide.photo-bg .content .micro b{ color:#F6F1E4; }
+.slide.photo-bg .content .hand,
+.slide.photo-bg .content .hand-lead{ color:var(--glow); }
+.slide.photo-bg .eyebrow{ color:var(--glow); }
+/* a long verbatim quote laid over a photo: still the only focal element,
+   but sized so it never turns into a wall of oversized text */
+.quote-photo{
+  font-size:clamp(20px,2.3vw,32px); font-weight:700; line-height:1.68;
+  max-width:34ch; color:#FBF7EE; text-shadow:0 2px 22px rgba(0,0,0,.6);
+  border-left:3px solid var(--glow); padding-left:clamp(18px,2vw,28px);
+}
 
 /* ===================================================================
    Method step marker
@@ -206,52 +364,100 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .step-mark b{ color:var(--glow-dim); }
 
 /* ===================================================================
-   Glow-shield signature moment (method 4)
+   GLOW-SHIELD SIGNATURE MOMENT (method 4)
+   -------------------------------------------------------------------
+   Architecture = full-bleed photo + a lights-out → UV-flash reveal on top.
+   The photo lives in the SAME `.photo-bg .bg-layer` component as every
+   other photo slide, so swapping in the real UV shield photo is the
+   identical two-line edit (set --photo, drop `awaiting`).
+   The reveal is done by `.uv-veil` (a darkness layer that lifts) and
+   `.uv-flash` (the purple-lamp pop) — both are overlays, so they work on
+   top of any real photograph.
    =================================================================== */
-.glow-stage{
-  position:relative; width:100%; height:100%;
-  background:#0D0B08;
-  display:flex; align-items:center; justify-content:center;
-  overflow:hidden;
+.slide.uv-reveal{ justify-content:center; }
+/* while there is no real photo yet, the placeholder for THIS slide is a dark
+   room rather than the warm field used by the other photo placeholders */
+.slide.uv-reveal.awaiting .bg-layer{
+  background-image:
+    radial-gradient(70% 55% at 50% 46%, rgba(120,74,220,.30), transparent 68%),
+    linear-gradient(160deg, #1B1430 0%, #0C0918 55%, #050409 100%);
 }
-.glow-stage .pre-text{
-  position:absolute; color:#EDE7D6; font-size:clamp(20px,2.6vw,30px);
-  font-family:var(--font-body); font-weight:700; text-align:center; max-width:70%;
-  opacity:1; transition:opacity .4s ease;
+.slide.uv-reveal .content{ text-align:center; }
+/* darkness before the flash: the room with the lights off */
+.uv-veil{
+  position:absolute; inset:0; z-index:2; background:#07060B; pointer-events:none;
+  opacity:.94; transition:opacity 1.1s ease-out;
 }
-.glow-stage.flashed .pre-text{ opacity:0; }
-.flash-layer{
-  position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none;
+.slide.uv-reveal.lit .uv-veil{ opacity:.28; }
+.uv-flash{ position:absolute; inset:0; z-index:3; background:#EDE6FF; opacity:0; pointer-events:none; }
+.slide.uv-reveal.lit .uv-flash{ animation:uvPop 1.05s ease-out forwards; }
+@keyframes uvPop{
+  0%{ opacity:0; } 6%{ opacity:.92; } 26%{ opacity:.12; } 100%{ opacity:0; }
 }
-.glow-stage.flashed .flash-layer{ animation:flashPop .55s ease-out forwards; }
-@keyframes flashPop{
-  0%{ opacity:0; } 8%{ opacity:1; } 100%{ opacity:0; }
+/* purple UV cast + glow bloom left over the photograph after the flash */
+.uv-cast{
+  position:absolute; inset:0; z-index:2; pointer-events:none; opacity:0;
+  transition:opacity 1.4s ease .25s;
+  background:
+    radial-gradient(58% 46% at 50% 48%, rgba(198,241,53,.34), transparent 70%),
+    radial-gradient(110% 92% at 50% 50%, rgba(104,62,204,.26), rgba(6,4,14,.72) 82%);
+  mix-blend-mode:screen;
 }
-.shield-grid{
-  position:absolute; inset:0; display:grid; place-items:center;
-  grid-template-columns:repeat(4,1fr); gap:clamp(10px,2vw,26px);
-  padding:8%; opacity:0; transform:scale(.94);
-  transition:opacity .5s ease .1s, transform .6s cubic-bezier(.16,1,.3,1) .1s;
+/* keep the room feeling dark even after the lights come up */
+.slide.uv-reveal.lit .uv-veil{ opacity:.20; }
+.slide.uv-reveal .scrim{
+  background:radial-gradient(120% 100% at 50% 50%, rgba(6,4,14,.10), rgba(6,4,14,.72) 84%);
 }
-.glow-stage.flashed .shield-grid{ opacity:1; transform:scale(1); }
-.shield{
-  width:clamp(52px,7vw,110px); aspect-ratio:1/1.15;
-  clip-path:polygon(50% 0%,100% 20%,100% 60%,50% 100%,0% 60%,0% 20%);
-  background:var(--glow);
-  box-shadow:0 0 18px 4px rgba(198,241,53,.85), 0 0 46px 10px rgba(198,241,53,.35);
-  animation:shieldPulse 2.4s ease-in-out infinite;
+.slide.uv-reveal.lit .uv-cast{ opacity:1; }
+/* the line spoken before the lights go out */
+.uv-pre{
+  position:absolute; z-index:4; inset:0; display:flex; align-items:center; justify-content:center;
+  padding:var(--slide-pad); text-align:center;
+  transition:opacity .5s ease;
 }
-.shield:nth-child(3n){ animation-delay:.3s; }
-.shield:nth-child(4n){ animation-delay:.6s; }
-.shield:nth-child(5n){ animation-delay:.9s; }
-@keyframes shieldPulse{
-  0%,100%{ filter:brightness(1); } 50%{ filter:brightness(1.35); }
+.slide.uv-reveal.lit .uv-pre{ opacity:0; pointer-events:none; }
+.uv-pre p{ color:#E6DFCE; font-size:clamp(20px,2.4vw,30px); font-weight:700; line-height:1.7; max-width:24ch; }
+/* the child's line, in handwriting, after the reveal */
+.uv-caption{
+  position:relative; z-index:4; opacity:0; transform:translateY(18px);
+  transition:opacity .9s ease .7s, transform .9s cubic-bezier(.16,1,.3,1) .7s;
 }
-.glow-stage .caption{
-  position:absolute; bottom:9%; color:var(--glow); font-family:var(--font-hand);
-  font-size:clamp(24px,3vw,38px); opacity:0; transition:opacity .5s ease .5s;
+.slide.uv-reveal.lit .uv-caption{ opacity:1; transform:none; }
+.uv-caption .hand-lead{
+  color:var(--glow);
+  text-shadow:0 0 26px rgba(198,241,53,.75), 0 0 70px rgba(198,241,53,.35);
 }
-.glow-stage.flashed .caption{ opacity:1; }
+
+/* ===================================================================
+   Dramatic number slides
+   =================================================================== */
+.stat-hero{ position:relative; }
+/* the numeral's line-box sits higher than its ink; nudge back to optical centre */
+.stat-hero .slide-inner{ transform:translateY(13vh); }
+.stat-hero .stat-num{
+  font-size:clamp(160px, 40vh, 460px); line-height:.82;
+  background:linear-gradient(178deg, var(--glow) 6%, var(--glow-dim) 92%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 46px rgba(198,241,53,.22));
+}
+.stat-hero .unit{
+  font-family:var(--font-hand); font-size:clamp(38px,5vw,84px); color:var(--glow);
+  margin-left:.12em; vertical-align:.28em;
+}
+.stat-hero .stat-label{ font-size:13px; letter-spacing:.22em; }
+/* two numbers, one dwarfing the other = the growth is felt, not read */
+.stat-duo{ display:flex; align-items:flex-end; gap:clamp(24px,6vw,90px); flex-wrap:wrap; }
+.stat-duo .then .stat-num{ font-size:clamp(56px,9vh,110px); color:#7E7361; opacity:.72; }
+.stat-duo .then .stat-label{ color:#7E7361; }
+.stat-duo .now  .stat-num{
+  font-size:clamp(150px, 34vh, 380px); line-height:.84; color:var(--glow);
+  filter:drop-shadow(0 0 50px rgba(198,241,53,.28));
+}
+.stat-duo .now .stat-label{ color:var(--glow); }
+.stat-duo .link{
+  font-family:var(--font-data); font-weight:800; font-size:clamp(20px,2.4vw,34px);
+  color:var(--clay); padding-bottom:clamp(18px,5vh,54px);
+}
 
 /* ===================================================================
    Nav UI
@@ -298,7 +504,9 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 @media (max-width: 760px){
   :root{ --slide-pad:20px; }
   .arrow-flow{ flex-direction:column; gap:12px; }
-  .shield-grid{ grid-template-columns:repeat(3,1fr); }
+  .stat-duo{ gap:16px; }
+  .stat-duo .now .stat-num{ font-size:clamp(110px,26vh,220px); }
+  .slide--anchor-r .slide-inner{ max-width:100%; }
 }
 
 @media (prefers-reduced-motion: reduce){

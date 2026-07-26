@@ -32,7 +32,8 @@
 
   // ---- per-slide enter/leave behaviour --------------------------------
   function onEnter(slide) {
-    if (slide.querySelector(".stat-num[data-count-to]")) animateCounts(slide);
+    if (slide.querySelector("[data-count-to]")) animateCounts(slide);
+    if (slide.dataset.role === "year-track") buildYearTrack(slide);
     if (slide.classList.contains("uv-reveal")) triggerReveal(slide);
     if (slide.dataset.role === "live-results") startLiveResults(slide);
   }
@@ -44,17 +45,46 @@
   }
 
   function animateCounts(slide) {
-    slide.querySelectorAll(".stat-num[data-count-to]").forEach((el) => {
+    slide.querySelectorAll("[data-count-to]").forEach((el) => {
       const to = parseInt(el.dataset.countTo, 10);
+      // keep any trailing unit mark (位 / 场 / 人次) and only re-write the digits
+      const unit = el.querySelector(".unit, .t-unit");
       const dur = 900;
       const start = performance.now();
       function frame(t) {
         const p = Math.min(1, (t - start) / dur);
         const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = Math.round(eased * to);
+        const n = String(Math.round(eased * to));
+        if (unit) el.firstChild.nodeValue = n;
+        else el.textContent = n;
         if (p < 1) requestAnimationFrame(frame);
       }
       requestAnimationFrame(frame);
+    });
+  }
+
+  // 2023–2026 bars. Heights come from data-sessions; a year with no number
+  // yet renders as a dashed "待填" column instead of inventing data.
+  function buildYearTrack(slide) {
+    const cols = Array.from(slide.querySelectorAll(".year-col"));
+    const nums = cols.map((c) => parseInt(c.dataset.sessions, 10)).filter((n) => !isNaN(n));
+    const max = nums.length ? Math.max(...nums) : 0;
+
+    cols.forEach((col, idx) => {
+      if (col.dataset.built) return;
+      col.dataset.built = "1";
+      const s = parseInt(col.dataset.sessions, 10);
+      const p = parseInt(col.dataset.people, 10);
+      const empty = isNaN(s);
+      col.classList.toggle("is-empty", empty);
+      col.innerHTML =
+        `<div class="val">${empty ? "待填" : s + " 场"}</div>` +
+        `<div class="people">${empty || isNaN(p) ? "&nbsp;" : p + " 人次"}</div>` +
+        `<div class="bar"></div>` +
+        `<div class="yr">${col.dataset.year}</div>`;
+      const bar = col.querySelector(".bar");
+      const pct = empty ? 26 : Math.max(12, Math.round((s / max) * 100));
+      setTimeout(() => { bar.style.height = pct + "%"; }, 260 + idx * 130);
     });
   }
 

@@ -10,150 +10,163 @@
 
 <!--
   ============================================================
-  排版规则（改动时请守住，这是这份 deck 的骨架）
+  这份 deck 的四条骨架规则（改动时请守住）
   ------------------------------------------------------------
-  1) 一张 slide 只能有一个「一级」元素：.lead / .hand-lead / .stat-hero
-     / .stat-duo .now / .sticky p 六选一，其余一律 .sub 或 .micro。
-  2) 手写体（.hand / .hand-lead）只给一级重点的那几个字，字号≥周围
-     正文 1.4 倍，颜色固定 clay（浅底）或 glow（深底）。
-  3) 照片一律全屏：<section class="slide photo-bg">，没有小方框。
-     换真照片 = 设 --photo 变量 + 拿掉 awaiting，两处改动，详见 style.css
-     顶部 FULL-BLEED PHOTO SLIDE 注解。
+  1) 版式统一：所有内容页都是「垂直置中 + 靠同一条左边线」，
+     不左右跳动。分量靠字级、颜色、留白，不靠移动位置。
+     只有封面 / 投票 / 谢谢三页用 .slide--center 置中。
+  2) 一张 slide 一个一级重点：.lead / .hand-term / .stat-hero
+     / .stat-duo .now / .sticky p 择一，其余一律 .sub 或 .micro。
+  3) 断句手动控制：中文没有空格，浏览器会把词组拦腰切断，
+     所以每句 .lead 自带 <br>，CSS 已关掉自动平衡换行。
+  4) 手写体只给「短关键词」（2–6 字）或「人说的话」整句：
+     - 句中关键词 → <span class="hand">
+     - 家长／孩子的话整句 → .hand-quote 或便利贴 .sticky
+     - 专有称呼「教育合伙人」「谢谢大家」→ .hand-term
+  ------------------------------------------------------------
+  照片：全部是全屏 .photo-bg。目前用 assets/img/mock/ 的「示意图」（网络
+  素材，仅供排版预览，正式使用前务必换掉）。
+  换真图 = 把该页 <div class="bg-layer" style="background-image:url('…')">
+  里的路径改成自己的图；--focal 控制裁切焦点（例 50% 30% = 保住上方的人脸）。
   ============================================================
 -->
 
 <div id="progress"></div>
-<div id="slide-counter">1 / 29</div>
+<div id="slide-counter">1 / 30</div>
 
 <div id="deck">
 
   <!-- ============ 1. 标题 ============ -->
-  <section class="slide dark">
-    <div class="slide-inner" style="text-align:center;">
-      <div class="eyebrow anim" style="justify-content:center;">泰丰华小 lawatan penanda aras</div>
-      <h1 class="lead lead--center lead--wide anim d1">
+  <section class="slide dark slide--center">
+    <div class="slide-inner">
+      <div class="eyebrow anim">泰丰华小 lawatan penanda aras</div>
+      <h1 class="lead anim d1">
         参与，不是家长的<span class="hand">素质</span>，<br>是老师设计出来的<span class="hand">系统</span>。
       </h1>
-      <p class="sub sub--center anim d2" style="margin-top:34px;">如何改变教学法，让家长走进课堂</p>
-      <p class="micro anim d3" style="margin-top:64px; text-align:center;">
+      <p class="sub anim d2" style="margin-top:34px;">如何改变教学法，让家长走进课堂</p>
+      <p class="micro anim d3" style="margin:64px auto 0;">
         特别感谢 彭薆郿校长・郑昇耀校长（前）・吕副校长・GPK HEM 与保安团队
       </p>
     </div>
   </section>
 
   <!-- ============ 2. 起点（全屏照片） ============
-       替换：--photo:url('assets/img/2023-07-20-信心皇冠.jpg') 并删掉 awaiting -->
-  <section class="slide photo-bg awaiting slide--anchor-bl" style="--focal:50% 42%;">
-    <div class="bg-layer"></div>
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/信心皇冠.jpg') -->
+  <section class="slide photo-bg" style="--focal:50% 45%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-classroom.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 01</span>
-      <p class="what">2023-07-20「信心皇冠」现场照<br>要「乱中有序」的画面，不要挑最整齐那张</p>
-      <p class="how">替换方式：把本 section 的 class 里的 <b>awaiting</b> 删掉，<br>并加上 style="--photo:url('assets/img/信心皇冠.jpg')"</p>
+      <span class="tag">Photo 01 · 示意图</span>
+      <p class="what">待换：2023-07-20「信心皇冠」现场照，要「乱中有序」</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="scrim"></div>
     <div class="content">
       <div class="eyebrow anim">起点</div>
-      <p class="sub anim d1" style="margin-bottom:14px;">三年前，我第一次让家长走进课堂。</p>
-      <p class="lead anim-focus d2">效果，没有大家想象中那么顺利。</p>
-      <p class="sub anim d3" style="margin-top:22px;">我没有把要求先讲清楚，现场就是乱的——家长不知道自己该做什么、做到什么程度，我反而要花更多力气去补位、去救场。</p>
+      <p class="sub anim d1" style="margin-bottom:16px;">三年前，我第一次让家长走进课堂。</p>
+      <p class="lead anim-focus d2">效果，<br>没有大家想象中那么顺利。</p>
+      <p class="sub anim d3" style="margin-top:24px;">我没有把要求先讲清楚，现场就是乱的——家长不知道自己该做什么、<br>做到什么程度，我反而要花更多力气去补位、去救场。</p>
     </div>
   </section>
 
-  <!-- ============ 3. 意棠妈妈 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 3. 意棠妈妈（家长的话 → 整句手写） ============ -->
+  <section class="slide">
     <div class="slide-inner">
-      <div class="sticky anim" style="--tilt:-2deg;">
-        <p>「我只负责那么几个小朋友就手忙脚乱了……老师平常怎么一个人应付那么多学生？」</p>
-        <p style="margin-top:16px;">「还有一个小朋友去了两次厕所洗手，因为浆糊两次都倒在他自己身上……」</p>
+      <div class="sticky anim" style="--tilt:-1.6deg;">
+        <p>「我只负责那么几个小朋友就手忙脚乱了……<br>老师平常怎么一个人应付那么多学生？」</p>
+        <p style="margin-top:16px;">「还有一个小朋友去了两次厕所洗手，<br>因为浆糊两次都倒在他自己身上……」</p>
         <cite>—— 意棠妈妈，2023-07-20 心得回馈</cite>
       </div>
-      <p class="sub anim d2" style="margin-top:34px;">连家长自己都承认，那次是乱的。</p>
+      <p class="sub anim d2" style="margin-top:32px;">连家长自己都承认，那次是乱的。</p>
     </div>
   </section>
 
   <!-- ============ 4. 起点数字 5 ============ -->
-  <section class="slide dark stat-hero" style="text-align:center;">
+  <section class="slide dark stat-hero">
     <div class="slide-inner">
-      <div class="eyebrow anim" style="justify-content:center;">而且，我要老实讲另一件事</div>
-      <div class="stat-num anim-ignite" data-count-to="5" style="margin:2vh 0 0;">0<span class="unit">位</span></div>
+      <div class="eyebrow anim">而且，我要老实讲另一件事</div>
+      <div class="stat-num anim-ignite" data-count-to="5">0<span class="unit">位</span></div>
       <div class="stat-label anim d2">那一次，全班只有五位家长来</div>
-      <p class="sub sub--center anim d3" style="margin-top:30px;">五个人，还是乱的。<br>所以等一下如果你听到 44 场、278 人次，请先记住我的起点长这样。</p>
+      <p class="sub anim d3" style="margin-top:28px;">五个人，还是乱的。<br>所以等一下如果你听到 44 场、278 人次，请先记住我的起点长这样。</p>
     </div>
   </section>
 
   <!-- ============ 5. 主张句（本场核心） ============ -->
-  <section class="slide slide--anchor-bl">
+  <section class="slide">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:28px;">我今天想分享的，不是「我们班家长特别好」。而是——</p>
-      <p class="lead anim-focus d1" style="max-width:17ch;">家长会不会参与，从来不是家长的素质问题，是老师有没有把<span class="hand">系统</span>设计出来。</p>
+      <p class="sub anim" style="margin-bottom:30px;">我今天想分享的，不是「我们班家长特别好」。而是——</p>
+      <p class="lead anim-focus d1">
+        家长会不会参与，<br>从来不是家长的素质问题，<br>是老师有没有把<span class="hand">系统</span>设计出来。
+      </p>
     </div>
   </section>
 
   <!-- ============ 6. 方法一 ============ -->
-  <section class="slide slide--anchor-tl">
+  <section class="slide">
     <div class="slide-inner">
       <div class="step-mark anim"><b>01</b> 合法性先行</div>
-      <p class="lead anim d1">第一步，其实跟家长完全没有关系。</p>
-      <p class="sub anim d2" style="margin-top:26px;">2023年真正让家长入班之前，我先查了 <b>Pekeliling</b>、SDK 课堂志愿者的法源，再去跟学校行政谈——因为我心里第一个念头，跟在座很多老师一样：「这样做，校方会不会不允许？」</p>
+      <p class="lead anim d1">第一步，<br>其实跟家长完全没有关系。</p>
+      <p class="sub anim d2" style="margin-top:28px;">2023年真正让家长入班之前，我先查了 <b>Pekeliling</b>、SDK 课堂志愿者的法源，<br>再去跟学校行政谈——因为我心里第一个念头，跟在座很多老师一样：<br>「这样做，校方会不会不允许？」</p>
     </div>
   </section>
 
   <!-- ============ 7. Sarana Ibu Bapa ============ -->
-  <section class="slide dark slide--anchor-bl">
+  <section class="slide dark">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:22px;">教育部本来就有一份《<b>Sarana Ibu Bapa</b>》家长工具包 <span class="cite-chip">MOE (2012)</span>，写明家长参与能提升孩子的自我价值感、学习动机、出席率，并减少纪律问题。</p>
-      <p class="hand-lead hand-lead--sm anim-focus d2">这不是我发明的，是教育部本来就希望我们做的。</p>
+      <p class="sub anim" style="margin-bottom:26px;">教育部本来就有一份《<b>Sarana Ibu Bapa</b>》家长工具包 <span class="cite-chip">MOE (2012)</span>，<br>写明家长参与能提升孩子的自我价值感、学习动机、出席率，并减少纪律问题。</p>
+      <p class="lead anim-focus d2">这不是我发明的，<br>是<span class="hand">教育部</span>本来就希望我们做的。</p>
     </div>
   </section>
 
   <!-- ============ 8. 唯一一步不需要家长 ============ -->
-  <section class="slide slide--anchor-r">
+  <section class="slide">
     <div class="slide-inner">
       <div class="eyebrow anim">四步里面</div>
-      <p class="hand-lead anim-focus d1" style="margin-left:auto;">只有这一步<br>不需要任何家长。</p>
-      <p class="sub anim d3" style="margin-top:30px; margin-left:auto;">你今天回去、明天早上就能做——查一份 Pekeliling，去问行政一句话。你不需要先有一群愿意来的家长，才有资格开始。你只需要先确认，这扇门是开的。</p>
+      <p class="lead anim-focus d1">只有这一步，<br><span class="hand">不需要家长</span>。</p>
+      <p class="sub anim d3" style="margin-top:30px;">你今天回去、明天早上就能做——查一份 Pekeliling，去问行政一句话。<br>你不需要先有一群愿意来的家长，才有资格开始。<br>你只需要先确认，这扇门是开的。</p>
     </div>
   </section>
 
   <!-- ============ 9. 方法二 ============ -->
-  <section class="slide slide--anchor-tl">
+  <section class="slide">
     <div class="slide-inner">
       <div class="step-mark anim"><b>02</b> 共同目标设定，不是分派任务</div>
-      <p class="lead anim d1">每次活动前，先把<span class="hand">学习目标</span>讲清楚。</p>
-      <p class="sub anim d2" style="margin-top:26px;">家长才知道自己在做什么、为什么做，而不是等我现场发指令。</p>
+      <p class="lead anim d1">每次活动前，<br>先把「<span class="hand">学习目标</span>」讲清楚。</p>
+      <p class="sub anim d2" style="margin-top:28px;">家长才知道自己在做什么、为什么做，而不是等我现场发指令。</p>
     </div>
   </section>
 
   <!-- ============ 10. 叶子鸟筹备（全屏照片） ============
-       替换：--photo:url('assets/img/叶子鸟筹备.jpg') 并删掉 awaiting -->
-  <section class="slide photo-bg awaiting slide--anchor-bl" style="--focal:50% 45%;">
-    <div class="bg-layer"></div>
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/叶子鸟筹备.jpg') -->
+  <section class="slide photo-bg" style="--focal:50% 42%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-craft.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 02</span>
-      <p class="what">叶子鸟筹备过程——家长剪字卡 / 收集叶子<br>要「动手参与筹备」的画面，不是活动当天</p>
-      <p class="how">替换方式：删掉 class 里的 <b>awaiting</b>，<br>并加上 style="--photo:url('assets/img/叶子鸟筹备.jpg')"</p>
+      <span class="tag">Photo 02 · 示意图</span>
+      <p class="what">待换：叶子鸟筹备——家长剪字卡 / 收集叶子</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="scrim"></div>
     <div class="content">
-      <p class="quote-photo anim-focus d1">「我们说要让学生认读所有的重叠词，就有家长马上做了所有组别的字卡；我们说想营造捡落叶的场景，就有家长自己去收集了大大小小的叶子送来学校。」</p>
+      <p class="quote-photo anim-focus d1">
+        「我们说要让学生认读所有的重叠词，<br>就有家长马上做了所有组别的字卡；<br>我们说想营造捡落叶的场景，<br>就有家长自己去收集了大大小小的叶子送来学校。」
+      </p>
     </div>
   </section>
 
   <!-- ============ 11. mutualistic goals ============ -->
-  <section class="slide dark slide--anchor-bl">
+  <section class="slide dark">
     <div class="slide-inner">
       <div class="eyebrow anim">mutualistic goals <span class="cite-chip">Rudder, Zenkov &amp; Polly (2025)</span></div>
-      <p class="lead anim-focus d1" style="max-width:22ch;">跨界合作要撑得久，第一个条件不是热情，是<span class="hand">双方都拿到自己要的东西</span>。</p>
+      <p class="lead anim-focus d1">跨界合作要撑得久，<br>第一个条件不是热情，<br>是双方都拿到<span class="hand">自己要的</span>。</p>
       <p class="sub anim d3" style="margin-top:28px;">家长要的不是「被使唤」，是「我参与了我孩子的学习」。</p>
     </div>
   </section>
 
-  <!-- ============ 12. 杰森妈妈 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 12. 杰森妈妈（家长的话） ============ -->
+  <section class="slide">
     <div class="slide-inner">
       <p class="sub anim" style="margin-bottom:26px;">我一直以为，是我在麻烦家长。结果今年一位妈妈在心得最后补了一句话——</p>
-      <div class="sticky anim d1" style="--tilt:1.6deg;">
-        <p>「老师，谢谢您！每次有活动都没有错过我，都会让我参与，真的很开心也很感动。」</p>
+      <div class="sticky anim d1" style="--tilt:1.4deg;">
+        <p>「老师，谢谢您！每次有活动都没有错过我，<br>都会让我参与，真的很开心也很感动。」</p>
         <cite>—— 杰森妈妈，2026-07-08 心得回馈</cite>
       </div>
       <p class="sub anim d3" style="margin-top:30px;">她在谢我<b>没有漏掉她</b>。</p>
@@ -161,35 +174,35 @@
   </section>
 
   <!-- ============ 13. 被邀请 ============ -->
-  <section class="slide dark slide--anchor-bl">
+  <section class="slide dark">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:24px;">研究家长参与的学者早就讲过：家长会不会参与，最关键的因素之一，是「家长有没有感觉到自己被邀请」 <span class="cite-chip">Walker et al. (2005)</span>。</p>
-      <p class="hand-lead hand-lead--sm anim-focus d2">有时候不是家长不想来，<br>是从来没有人开这道门。</p>
+      <p class="sub anim" style="margin-bottom:26px;">研究家长参与的学者早就讲过：家长会不会参与，最关键的因素之一，<br>是「家长有没有感觉到自己被邀请」 <span class="cite-chip">Walker et al. (2005)</span>。</p>
+      <p class="lead anim-focus d2">有时候不是家长不想来，<br>是从来<span class="hand">没有人开门</span>。</p>
     </div>
   </section>
 
-  <!-- ============ 14. 教育合伙人 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 14. 教育合伙人（专有称呼 → 整句手写） ============ -->
+  <section class="slide">
     <div class="slide-inner">
       <div class="step-mark anim"><b>03</b> 重新命名，改变角色认知</div>
-      <p class="sub anim d1" style="margin:18px 0 10px;">我把这群家长，重新叫做——</p>
-      <p class="hand-lead hand-lead--xl anim-focus d2">教育合伙人</p>
+      <p class="sub anim d1" style="margin:20px 0 14px;">我把这群家长，重新叫做——</p>
+      <p class="hand-term anim-focus d2">教育合伙人</p>
     </div>
   </section>
 
   <!-- ============ 15. 改的是位置 ============ -->
-  <section class="slide slide--anchor-r">
+  <section class="slide">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-left:auto; margin-bottom:26px;">称呼一变，家长对自己角色的想象也变了——不是打杂，是从头到尾参与整个教学设计。边界跨越（<span class="cite-chip">boundary-spanning · Rudder et al. 2025</span>）的研究里说：一个人只要主动跨出自己原本的角色，进到一个新的空间成为真正的伙伴，他就不再是外人了。</p>
-      <p class="hand-lead anim-focus d2" style="margin-left:auto;">所以改的不是称呼，是位置。</p>
+      <p class="sub anim" style="margin-bottom:28px;">称呼一变，家长对自己角色的想象也变了——不是打杂，是从头到尾参与整个教学设计。<br>边界跨越（<span class="cite-chip">boundary-spanning · Rudder et al. 2025</span>）的研究里说：一个人只要主动跨出<br>自己原本的角色，进到一个新的空间成为真正的伙伴，他就不再是外人了。</p>
+      <p class="lead anim-focus d2">所以改的不是称呼，<br>是<span class="hand">位置</span>。</p>
     </div>
   </section>
 
   <!-- ============ 16. 团队 5 → 12 ============ -->
-  <section class="slide dark slide--left">
+  <section class="slide dark">
     <div class="slide-inner">
       <div class="eyebrow anim">2023 一整年，同一个班的家长团队</div>
-      <div class="stat-duo anim d1" style="margin-top:2vh;">
+      <div class="stat-duo anim d1" style="margin-top:3vh;">
         <div class="then">
           <div class="stat-num" data-count-to="5">0</div>
           <div class="stat-label">年初</div>
@@ -204,36 +217,36 @@
   </section>
 
   <!-- ============ 17. 边界教训（全屏照片） ============
-       替换：--photo:url('assets/img/教育合伙人合照.jpg') 并删掉 awaiting -->
-  <section class="slide photo-bg awaiting slide--anchor-bl" style="--focal:50% 40%;">
-    <div class="bg-layer"></div>
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/教育合伙人合照.jpg') -->
+  <section class="slide photo-bg" style="--focal:50% 45%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-school.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 03</span>
-      <p class="what">教育合伙人团队合照<br>人数越多越好，要能一眼看到「这是一支团队」</p>
-      <p class="how">替换方式：删掉 class 里的 <b>awaiting</b>，<br>并加上 style="--photo:url('assets/img/教育合伙人合照.jpg')"</p>
+      <span class="tag">Photo 03 · 示意图</span>
+      <p class="what">待换：教育合伙人团队合照，人数越多越好</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="scrim"></div>
     <div class="content">
-      <p class="sub anim" style="margin-bottom:12px;"><b>教育合伙人是有分工、有角色的，不是谁来都行。</b>有一次因为座位安排没有设清楚边界，一位家长离开了自己负责的小组，跑去别的组。之后我们才在座位设计和角色分工上加了明确规则。</p>
-      <p class="hand-lead hand-lead--sm anim-focus d2">这不是家长的问题，<br>是我没有把边界画清楚。</p>
+      <p class="sub anim" style="margin-bottom:18px;"><b>教育合伙人是有分工、有角色的，不是谁来都行。</b><br>有一次因为座位安排没有设清楚边界，一位家长离开了自己负责的小组，跑去别的组。<br>之后我们才在座位设计和角色分工上加了明确规则。</p>
+      <p class="lead lead--sm anim-focus d2">这不是家长的问题，<br>是我没有把<span class="hand">边界</span>画清楚。</p>
     </div>
   </section>
 
   <!-- ============ 18. 方法四 DSKP（全屏照片） ============
-       替换：--photo:url('assets/img/郊游趣.jpg') 并删掉 awaiting -->
-  <section class="slide photo-bg awaiting slide--anchor-bl" style="--focal:50% 50%;">
-    <div class="bg-layer"></div>
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/郊游趣.jpg') -->
+  <section class="slide photo-bg" style="--focal:50% 55%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-field.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 04</span>
-      <p class="what">「郊游趣」户外教学——稻田 / 灯塔 / 陶瓷工作坊任一张<br>要看得到学生在真实场景里上课</p>
-      <p class="how">替换方式：删掉 class 里的 <b>awaiting</b>，<br>并加上 style="--photo:url('assets/img/郊游趣.jpg')"</p>
+      <span class="tag">Photo 04 · 示意图</span>
+      <p class="what">待换：「郊游趣」户外教学——稻田 / 灯塔 / 陶瓷工作坊</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="scrim"></div>
     <div class="content">
       <div class="step-mark anim"><b>04</b> 每一场都在 DSKP 框架内</div>
-      <p class="lead lead--sm anim-focus d1" style="max-width:22ch;">不是在正课之外加东西，是把课纲本来要教的，<span class="hand">换一种方式教</span>。</p>
-      <ul class="sub anim d3" style="margin-top:22px; padding-left:20px; list-style:disc;">
-        <li style="margin-bottom:8px;">二年级「郊游趣」户外教学，整趟行程按华文课本第八单元「鱼米之乡」设计，一天上完华文、国文、英文、数学、科学、艺术、体育</li>
+      <p class="lead lead--sm anim-focus d1">不是在正课之外加东西，<br>是把课纲本来要教的，<span class="hand">换一种方式</span>教。</p>
+      <ul class="sub anim d3" style="margin-top:24px; padding-left:20px; list-style:disc;">
+        <li style="margin-bottom:8px;">二年级「郊游趣」户外教学，整趟行程按华文课本第八单元「鱼米之乡」设计，<br>一天上完华文、国文、英文、数学、科学、艺术、体育</li>
         <li style="margin-bottom:8px;">三年级课文《上天送来的小彩虹》，就带学生去外面等雨后的彩虹</li>
         <li>美术课「均衡与对称」的教学目标，做成会发光的传统盾牌</li>
       </ul>
@@ -241,16 +254,15 @@
   </section>
 
   <!-- ============ 19. 荧光盾牌 · 全屏照片 + 揭晓灯效 ============
-       这是全场的 signature moment。
-       替换：--photo:url('assets/img/荧光盾牌-UV.jpg') 并删掉 awaiting。
-       暗场→闪光→荧光余晖三层动画（.uv-veil / .uv-flash / .uv-cast）
-       都是叠在照片之上的遮罩，换成真实照片后动画照常运作。-->
-  <section class="slide photo-bg awaiting uv-reveal" style="--focal:50% 50%;">
-    <div class="bg-layer"></div>
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/荧光盾牌-UV.jpg')
+       暗场 .uv-veil → 闪光 .uv-flash → 荧光余晖 .uv-cast 三层都是叠在
+       照片上的遮罩，换成真实照片后灯效照常运作。-->
+  <section class="slide photo-bg uv-reveal" style="--focal:50% 50%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-glow.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 05 · 必用</span>
-      <p class="what">荧光盾牌暗室现场照——UV 灯亮起的那一瞬间<br>要拍到孩子举着发光盾牌的脸</p>
-      <p class="how">替换方式：删掉 class 里的 <b>awaiting</b>，<br>并加上 style="--photo:url('assets/img/荧光盾牌-UV.jpg')"<br>暗场→闪光→荧光余晖的灯效会自动叠在照片上</p>
+      <span class="tag">Photo 05 · 示意图 · 必用</span>
+      <p class="what">待换：荧光盾牌暗室现场照，UV 灯亮起那一瞬间</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="uv-veil"></div>
     <div class="uv-cast"></div>
@@ -260,24 +272,24 @@
     </div>
     <div class="content">
       <div class="uv-caption">
-        <p class="hand-lead hand-lead--sm hand-lead--center">「哇！！我的盾牌亮了！老师你看！！」</p>
+        <p class="hand-quote">「哇！！我的盾牌亮了！<br>老师你看！！」</p>
       </div>
     </div>
   </section>
 
   <!-- ============ 20. 会不会很乱 ============ -->
-  <section class="slide slide--anchor-bl">
+  <section class="slide">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:20px;">那还有人会担心：这样课室会不会很乱？</p>
-      <p class="hand-lead anim-focus d1">会。我到今天还是会乱。</p>
+      <p class="sub anim" style="margin-bottom:24px;">那还有人会担心：这样课室会不会很乱？</p>
+      <p class="lead anim-focus d1">会。<br>我到今天<span class="hand">还是会乱</span>。</p>
     </div>
   </section>
 
-  <!-- ============ 21. 颖婕妈妈 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 21. 颖婕妈妈（家长的话） ============ -->
+  <section class="slide">
     <div class="slide-inner">
       <div class="sticky anim" style="--tilt:-1deg;">
-        <p>「今天的参与，说实话，想象美好，现场有点失控。但有时候，所谓的『失控』，其实就是生命力最旺盛的时候。」</p>
+        <p>「今天的参与，说实话，想象美好，现场有点失控。<br>但有时候，所谓的『失控』，其实就是生命力最旺盛的时候。」</p>
         <cite>—— 颖婕妈妈，2026-06-11 心得回馈</cite>
       </div>
       <p class="sub anim d2" style="margin-top:32px;">这句话不是我讲的，是家长讲的。她比我更早原谅了那个乱。</p>
@@ -285,10 +297,10 @@
   </section>
 
   <!-- ============ 22. 5 → 11 ============ -->
-  <section class="slide dark slide--left">
+  <section class="slide dark">
     <div class="slide-inner">
       <div class="eyebrow anim">「卢老师，你是不是刚好遇到一批很好的家长？」</div>
-      <div class="stat-duo anim d1" style="margin-top:2vh;">
+      <div class="stat-duo anim d1" style="margin-top:3vh;">
         <div class="then">
           <div class="stat-num" data-count-to="5">0</div>
           <div class="stat-label">2023 · 第一次入班</div>
@@ -299,69 +311,97 @@
           <div class="stat-label">2026 · 全新班级 · 开学大扫除</div>
         </div>
       </div>
-      <p class="micro anim d3" style="margin-top:26px;">中间三年是 44 场活动、278 人次。但那不是重点。<br>校家信任研究说：决定信任的不是联络频率，是每一次互动的品质 <span class="cite-chip">Adams &amp; Christenson (2000)</span>。</p>
     </div>
   </section>
 
-  <!-- ============ 23. 换掉的是系统 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 23. 三年数据：场次 / 人次 / 年份 ============
+       ⚠️ 每年的拆分数字尚未确定，所以 data-sessions / data-people 先留空，
+       会显示成「待填」而不是假数据。填法：
+         <div class="year-col" data-year="2024" data-sessions="16" data-people="98"></div>
+       只要填了数字，柱子高度会自动依当年场次换算，不用改 CSS。
+       总数 44 场 / 278 人次是讲稿已确认的数字，进场会 count-up。-->
+  <section class="slide dark" data-role="year-track">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:22px;">从 5 到 11——</p>
-      <p class="hand-lead anim-focus d1">我换掉的不是家长，是系统。</p>
-      <p class="sub anim d3" style="margin-top:28px;">换一批人，同一套方法，重新跑起来了。</p>
+      <div class="eyebrow anim">2023 → 2026 · 三年累积</div>
+      <div class="total-row anim d1" style="margin-top:1vh;">
+        <div>
+          <div class="t-num" data-count-to="44">0<span class="t-unit">场</span></div>
+          <div class="t-lab">活动场次</div>
+        </div>
+        <div>
+          <div class="t-num" data-count-to="278">0<span class="t-unit">人次</span></div>
+          <div class="t-lab">家长参与人次</div>
+        </div>
+      </div>
+      <div class="year-track anim d2">
+        <div class="year-col" data-year="2023" data-sessions="" data-people=""></div>
+        <div class="year-col" data-year="2024" data-sessions="" data-people=""></div>
+        <div class="year-col" data-year="2025" data-sessions="" data-people=""></div>
+        <div class="year-col" data-year="2026" data-sessions="" data-people=""></div>
+      </div>
+      <p class="micro anim d3" style="margin-top:18px;">校家信任研究说：决定信任的不是联络频率，是每一次互动的品质 <span class="cite-chip">Adams &amp; Christenson (2000)</span>。所以我从来不追场次。</p>
     </div>
   </section>
 
-  <!-- ============ 24. 昱杰妈妈 ============ -->
-  <section class="slide slide--anchor-bl">
+  <!-- ============ 24. 换掉的是系统 ============ -->
+  <section class="slide">
     <div class="slide-inner">
-      <div class="sticky anim" style="--tilt:2deg;">
-        <p>「原来不是他们做不到，而是我们大人先入为主地认为他们做不到。」</p>
+      <p class="sub anim" style="margin-bottom:26px;">从 5 到 11——</p>
+      <p class="lead anim-focus d1">我换掉的不是家长，<br>是<span class="hand">系统</span>。</p>
+      <p class="sub anim d3" style="margin-top:30px;">换一批人，同一套方法，重新跑起来了。</p>
+    </div>
+  </section>
+
+  <!-- ============ 25. 昱杰妈妈（家长的话） ============ -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="sticky anim" style="--tilt:1.8deg;">
+        <p>「原来不是他们做不到，<br>而是我们大人先入为主地认为他们做不到。」</p>
         <cite>—— 昱杰妈妈，2026-02-13 心得回馈</cite>
       </div>
       <p class="sub anim d2" style="margin-top:32px;">她讲的是孩子。</p>
     </div>
   </section>
 
-  <!-- ============ 25. 我们看家长也是这样 ============ -->
-  <section class="slide dark slide--anchor-bl">
+  <!-- ============ 26. 我们看家长也是这样 ============ -->
+  <section class="slide dark">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:24px;">但我读到的时候，想到的是我自己——「我们班家长比较忙」「我们班家长比较难搞」，这些话，我们常常讲得太早了。</p>
-      <p class="hand-lead anim-focus d2">我们看家长，其实也是这样。</p>
+      <p class="sub anim" style="margin-bottom:26px;">但我读到的时候，想到的是我自己——<br>「我们班家长比较忙」「我们班家长比较难搞」，这些话，我们常常讲得太早了。</p>
+      <p class="lead anim-focus d2">我们看家长，<br>其实<span class="hand">也是这样</span>。</p>
       <p class="micro anim d3" style="margin-top:30px;">教学上的「逐步放手」<span class="cite-chip">Gradual Release of Responsibility · Fisher &amp; Frey 2013</span>——我做给你看、我们一起做、你们一起做、你自己做。我这三年做的，只是把同一套放手用在家长身上。</p>
     </div>
   </section>
 
-  <!-- ============ 26. 一个动作 ============ -->
-  <section class="slide slide--anchor-tl">
+  <!-- ============ 27. 一个动作 ============ -->
+  <section class="slide">
     <div class="slide-inner">
-      <p class="sub anim" style="margin-bottom:26px;">所以我今天不给大家三个技巧，只留一个动作：翻开你下星期本来就要上的那一课，找出其中一段，问自己一句——</p>
-      <p class="hand-lead hand-lead--sm anim-focus d2">这一段，如果现场多两双手，<br>会不会不一样？</p>
+      <p class="sub anim" style="margin-bottom:28px;">所以我今天不给大家三个技巧，只留一个动作：<br>翻开你下星期本来就要上的那一课，找出其中一段，问自己一句——</p>
+      <p class="lead anim-focus d2">这一段，如果现场<span class="hand">多两双手</span>，<br>会不会不一样？</p>
       <p class="sub anim d3" style="margin-top:30px;">不用重新设计课程，不用先认识谁，不用等一批好家长。</p>
     </div>
   </section>
 
-  <!-- ============ 27. 金句（全屏照片） ============
-       替换：--photo:url('assets/img/5人vs11人.jpg') 并删掉 awaiting -->
-  <section class="slide photo-bg awaiting slide--anchor-bl" style="--focal:50% 45%;">
-    <div class="bg-layer"></div>
+  <!-- ============ 28. 金句（全屏照片） ============
+       真图替换：把 .bg-layer 的 background-image 换成 url('assets/img/5人vs11人.jpg') -->
+  <section class="slide photo-bg" style="--focal:50% 40%;">
+    <div class="bg-layer" style="background-image:url('assets/img/mock/lf-group.jpg')"></div>
     <div class="photo-await">
-      <span class="tag">Photo 06</span>
-      <p class="what">并置两张：2023-07-20 首场（5 人） vs 2026-01-06 大扫除（11 人）<br>先拼成一张横图再放进来，视觉上直接把「起点很小」讲完</p>
-      <p class="how">替换方式：删掉 class 里的 <b>awaiting</b>，<br>并加上 style="--photo:url('assets/img/5人vs11人.jpg')"</p>
+      <span class="tag">Photo 06 · 示意图</span>
+      <p class="what">待换：并置两张 2023-07-20 首场（5 人） vs 2026-01-06 大扫除（11 人）</p>
+      <p class="how">替换方式：改本页 <b>.bg-layer</b> 的 background-image 路径</p>
     </div>
     <div class="scrim"></div>
     <div class="content">
-      <p class="hand-lead hand-lead--sm anim-focus d1">我不是遇到好家长才开始的，<br>我是开始了以后，才有了这些家长。</p>
+      <p class="lead anim-focus d1">我不是遇到好家长才开始的，<br>我是<span class="hand">开始了以后</span>，<br>才有了这些家长。</p>
     </div>
   </section>
 
-  <!-- ============ 28. 现场互动评分 ============ -->
-  <section class="slide" data-role="live-results">
-    <div class="slide-inner" style="text-align:center;">
-      <div class="eyebrow anim" style="justify-content:center;">现场互动</div>
-      <p class="lead lead--center lead--sm anim d1">听完这些，你现在几分想回去试试看？</p>
-      <div class="anim d2" style="display:flex; gap:56px; align-items:center; justify-content:center; margin-top:40px; flex-wrap:wrap;">
+  <!-- ============ 29. 现场互动评分 ============ -->
+  <section class="slide slide--center" data-role="live-results">
+    <div class="slide-inner">
+      <div class="eyebrow anim">现场互动</div>
+      <p class="lead lead--sm anim d1">听完这些，你现在几分想回去试试看？</p>
+      <div class="anim d2" style="display:flex; gap:56px; align-items:center; justify-content:center; margin-top:44px; flex-wrap:wrap;">
         <div class="qr-card">
           <div id="qr-holder"></div>
           <span>扫码，1–5 分投一票</span>
@@ -375,11 +415,11 @@
     </div>
   </section>
 
-  <!-- ============ 29. 谢谢 ============ -->
-  <section class="slide dark" style="text-align:center;">
+  <!-- ============ 30. 谢谢 ============ -->
+  <section class="slide dark slide--center">
     <div class="slide-inner">
-      <p class="hand-lead hand-lead--xl hand-lead--center anim-focus">谢谢大家</p>
-      <p class="sub sub--center anim d3" style="margin-top:26px;">1I 班・教育合伙人・卢湧权</p>
+      <p class="hand-term anim-focus">谢谢大家</p>
+      <p class="sub anim d3" style="margin-top:28px;">1I 班・教育合伙人・卢湧权</p>
     </div>
   </section>
 

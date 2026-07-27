@@ -6,6 +6,7 @@
   let i = 0;
   let liveResultsTimer = null;
   let splitTimer = null;
+  let slideHeartbeat = null;
 
   slides.forEach((_, idx) => {
     const dot = document.createElement("div");
@@ -26,6 +27,16 @@
     progress.style.width = `${((i + 1) / slides.length) * 100}%`;
     counter.textContent = `${i + 1} / ${slides.length}`;
     history.replaceState(null, "", `#${i + 1}`);
+    syncCurrentSlide(i);
+  }
+
+  // Keep the Malay companion page aligned with the presenter. This is
+  // intentionally fire-and-forget: a weak venue connection must never delay
+  // slide navigation. The heartbeat also refreshes `updated_at` while the
+  // presenter is speaking on a longer slide.
+  function syncCurrentSlide(idx) {
+    if (!window.SlideSync) return;
+    void SlideSync.update(idx).catch(() => {});
   }
 
   // The UV-shield slide swallows the FIRST "next": that press turns the lamp
@@ -204,16 +215,44 @@
   document.getElementById("tap-prev").addEventListener("click", prev);
   document.getElementById("tap-next").addEventListener("click", next);
   window.addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() === "m") {
+      toggleMalayQr();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "Escape" && isMalayQrOpen()) {
+      toggleMalayQr(false);
+      e.preventDefault();
+      return;
+    }
+    if (isMalayQrOpen()) return;
     if (["ArrowRight", " ", "PageDown"].includes(e.key)) { next(); e.preventDefault(); }
     if (["ArrowLeft", "PageUp"].includes(e.key)) { prev(); e.preventDefault(); }
   });
   let touchX = null;
   window.addEventListener("touchstart", (e) => touchX = e.touches[0].clientX);
   window.addEventListener("touchend", (e) => {
+    if (isMalayQrOpen()) return;
     if (touchX === null) return;
     const dx = e.changedTouches[0].clientX - touchX;
     if (Math.abs(dx) > 60) dx < 0 ? next() : prev();
     touchX = null;
+  });
+
+  // Press M on the opening slide to show the optional Malay companion QR.
+  const malayQrOverlay = document.getElementById("malay-qr-overlay");
+  function isMalayQrOpen() {
+    return malayQrOverlay && malayQrOverlay.classList.contains("open");
+  }
+  function toggleMalayQr(force) {
+    if (!malayQrOverlay) return;
+    const open = typeof force === "boolean" ? force : !isMalayQrOpen();
+    malayQrOverlay.classList.toggle("open", open);
+    malayQrOverlay.setAttribute("aria-hidden", String(!open));
+  }
+  document.getElementById("malay-qr-close")?.addEventListener("click", () => toggleMalayQr(false));
+  malayQrOverlay?.addEventListener("click", (e) => {
+    if (e.target === malayQrOverlay) toggleMalayQr(false);
   });
 
   // deep-link support (#3 opens slide 3)
@@ -226,4 +265,6 @@
   counter.textContent = `${startAt + 1} / ${slides.length}`;
   i = startAt;
   onEnter(slides[startAt]);
+  syncCurrentSlide(i);
+  slideHeartbeat = setInterval(() => syncCurrentSlide(i), 10000);
 })();

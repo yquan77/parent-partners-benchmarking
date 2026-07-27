@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B1E2D">
+<title>Paparan Bahasa Melayu · Rakan Kongsi Pendidikan</title>
+<link rel="stylesheet" href="my.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="live-header">
+      <div class="brand">Rakan Kongsi Pendidikan</div>
+      <div class="connection" id="connection" data-state="connecting" role="status">
+        <span class="connection-dot" aria-hidden="true"></span>
+        <span id="connection-label">Menyambung…</span>
+      </div>
+    </header>
+
+    <main class="live-main">
+      <div class="progress-track" aria-hidden="true">
+        <span class="progress-bar" id="progress-bar"></span>
+      </div>
+
+      <section class="cue-card" id="cue-card" aria-live="polite" aria-atomic="true">
+        <div class="cue-meta">
+          <span id="slide-label">Gagasan utama</span>
+          <span class="slide-number" id="slide-number">01 / 46</span>
+        </div>
+        <div class="cue-copy">
+          <h1 class="cue-text" id="slide-text">Penyertaan bukan soal “kualiti” ibu bapa; penyertaan boleh dibentuk melalui sistem yang direka oleh guru.</h1>
+        </div>
+        <div class="cue-foot">Ringkasan Bahasa Melayu</div>
+      </section>
+
+      <p class="live-note">Paparan ini akan bergerak secara automatik mengikut slaid pembentang. Anda tidak perlu menekan apa-apa.</p>
+    </main>
+
+    <details class="share">
+      <summary>Kongsi paparan ini</summary>
+      <div class="share-panel">
+        <div id="my-qr"></div>
+        <p>Imbas untuk membuka paparan yang sama.</p>
+      </div>
+    </details>
+  </div>
+
+  <noscript>Aktifkan JavaScript untuk mengikuti paparan langsung.</noscript>
+  <script src="../assets/js/supabase-config.js"></script>
+  <script src="../assets/js/slide-sync.js"></script>
+  <script src="../assets/js/malay-content.js"></script>
+  <script src="../assets/js/qrcode.min.js"></script>
+  <script>
+    (() => {
+      const slides = window.MALAY_SLIDES;
+      const card = document.getElementById("cue-card");
+      const label = document.getElementById("slide-label");
+      const text = document.getElementById("slide-text");
+      const number = document.getElementById("slide-number");
+      const progress = document.getElementById("progress-bar");
+      const connection = document.getElementById("connection");
+      const connectionLabel = document.getElementById("connection-label");
+      let shownIndex = -1;
+      let renderTimer = null;
+      let pollInFlight = false;
+
+      function setConnection(state, message) {
+        connection.dataset.state = state;
+        connectionLabel.textContent = message;
+      }
+
+      function render(index) {
+        const safeIndex = Math.min(Math.max(Number(index) || 0, 0), slides.length - 1);
+        if (safeIndex === shownIndex) return;
+        shownIndex = safeIndex;
+        card.classList.add("is-changing");
+        clearTimeout(renderTimer);
+        renderTimer = setTimeout(() => {
+          const item = slides[safeIndex];
+          label.textContent = item.label;
+          text.textContent = item.text;
+          number.textContent = `${String(safeIndex + 1).padStart(2, "0")} / ${slides.length}`;
+          progress.style.width = `${((safeIndex + 1) / slides.length) * 100}%`;
+          card.classList.remove("is-changing");
+        }, 170);
+      }
+
+      async function poll() {
+        if (pollInFlight) return;
+        pollInFlight = true;
+        try {
+          const row = await SlideSync.current();
+          render(row.slide_index);
+          const age = Date.now() - Date.parse(row.updated_at);
+          if (Number.isFinite(age) && age > 30000) {
+            setConnection("connecting", "Menunggu pembentang");
+          } else {
+            setConnection("connected", "Disambungkan");
+          }
+        } catch (error) {
+          setConnection("error", "Sambungan terputus");
+        } finally {
+          pollInFlight = false;
+        }
+      }
+
+      const preview = new URLSearchParams(location.search).get("preview");
+      if (preview) {
+        render(parseInt(preview, 10) - 1);
+        setConnection("connected", "Mod pratonton");
+      } else {
+        render(0);
+        poll();
+        setInterval(poll, 1500);
+      }
+
+      const canonicalUrl = location.href.replace(/[?#].*$/, "");
+      new QRCode(document.getElementById("my-qr"), {
+        text: canonicalUrl,
+        width: 132,
+        height: 132,
+        colorDark: "#0B1E2D",
+        colorLight: "#ffffff"
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -691,12 +691,24 @@
 
 </div>
 
+<div id="malay-qr-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="malay-qr-title">
+  <div class="malay-qr-panel">
+    <button id="malay-qr-close" type="button" aria-label="关闭马来文对照二维码">×</button>
+    <div class="eyebrow">Paparan Bahasa Melayu</div>
+    <h2 id="malay-qr-title">马来文重点同步显示</h2>
+    <p>扫码后，手机会自动跟着讲者翻页。</p>
+    <div id="malay-qr-holder"></div>
+    <span class="malay-qr-url">无需手动翻页 · 按 M 关闭</span>
+  </div>
+</div>
+
 <div id="nav"></div>
 <div id="tap-prev" class="tap-zone"></div>
 <div id="tap-next" class="tap-zone"></div>
 
 <script src="assets/js/supabase-config.js"></script>
 <script src="assets/js/ratings.js"></script>
+<script src="assets/js/slide-sync.js"></script>
 <script src="assets/js/qrcode.min.js"></script>
 <script src="assets/js/deck.js"></script>
 <script>
@@ -710,6 +722,11 @@
     text: location.origin + deckDir + "/vote/",
     width: 168, height: 168,
     colorDark: "#2E2419", colorLight: "#ffffff"
+  });
+  new QRCode(document.getElementById("malay-qr-holder"), {
+    text: location.href.replace(/index\.html.*$/,"").replace(/\/$/,"") + "/my/",
+    width: 220, height: 220,
+    colorDark: "#0B1E2D", colorLight: "#ffffff"
   });
 </script>
 </body>

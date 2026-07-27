@@ -873,6 +873,92 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .live-count{ font-family:var(--font-data); font-size:14px; color:var(--ink-soft); }
 
 /* ===================================================================
+   Optional Malay companion QR (press M; does not add another slide)
+   =================================================================== */
+#malay-qr-overlay{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:grid;
+  place-items:center;
+  padding:32px;
+  background:rgba(11,30,45,.78);
+  backdrop-filter:blur(12px);
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .22s ease, visibility 0s linear .22s;
+}
+#malay-qr-overlay.open{
+  opacity:1;
+  visibility:visible;
+  transition:opacity .22s ease, visibility 0s;
+}
+.malay-qr-panel{
+  position:relative;
+  width:min(560px, 92vw);
+  padding:42px;
+  border-radius:28px;
+  background:#F4F8F9;
+  color:#0B1E2D;
+  text-align:center;
+  box-shadow:0 35px 90px rgba(0,0,0,.35);
+}
+.malay-qr-panel .eyebrow{
+  justify-content:center;
+  margin-bottom:14px;
+  color:#0EA5B7;
+}
+.malay-qr-panel h2{
+  font-size:clamp(28px,4vw,42px);
+  line-height:1.2;
+}
+.malay-qr-panel p{
+  margin:10px 0 24px;
+  color:#47616F;
+  font-size:16px;
+}
+#malay-qr-holder{
+  width:max-content;
+  margin:auto;
+  padding:16px;
+  border-radius:18px;
+  background:#fff;
+}
+#malay-qr-holder canvas,#malay-qr-holder img{
+  display:block;
+  width:220px;
+  height:220px;
+}
+.malay-qr-url{
+  display:block;
+  margin-top:16px;
+  color:#47616F;
+  font-family:var(--font-data);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.05em;
+}
+#malay-qr-close{
+  position:absolute;
+  top:14px;
+  right:16px;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:transparent;
+  color:#47616F;
+  font-family:var(--font-data);
+  font-size:28px;
+  line-height:1;
+  cursor:pointer;
+}
+#malay-qr-close:focus-visible{
+  outline:3px solid rgba(14,165,183,.35);
+  outline-offset:2px;
+}
+
+/* ===================================================================
    Responsive
    =================================================================== */
 @media (max-width: 760px){

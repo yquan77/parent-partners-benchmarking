@@ -386,7 +386,8 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
     linear-gradient(90deg, rgba(14,10,5,.62) 0%, rgba(14,10,5,.10) 52%, rgba(14,10,5,0) 72%);
 }
 .slide.photo-bg .content{
-  position:relative; z-index:2; padding:var(--slide-pad);
+  position:relative; z-index:2;
+  padding:var(--slide-pad) var(--slide-pad) clamp(56px,9vh,128px);
   color:var(--paper); width:100%; max-width:1120px; margin:0 auto;
 }
 .slide.photo-bg .content .lead,

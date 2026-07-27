@@ -1,4 +1,5 @@
 .DS_Store
 node_modules/
+.trash/
 assets/fonts/*.ttf
 !assets/fonts/*.subset.woff2

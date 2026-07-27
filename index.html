@@ -610,7 +610,7 @@
   <section class="slide dark">
     <div class="slide-inner">
       <p class="sub anim" style="margin-bottom:26px;">同一位家长，隔了五个月，两个完全不同的科目，讲的是同一件事。</p>
-      <p class="lead anim-focus d2">所以我这三年换到的，<br>不只是一套系统。<br>是这个班里，愿意相信<span class="hand">孩子做得到</span>的大人，变多了。</p>
+      <p class="lead anim-focus d2">所以我这三年换到的，<br>不只是一套系统。<br>是这个班里，愿意相信<span class="hand">孩子做得到</span>的大人，<br>变多了。</p>
     </div>
   </section>
 
@@ -700,9 +700,14 @@
 <script src="assets/js/qrcode.min.js"></script>
 <script src="assets/js/deck.js"></script>
 <script>
-  // build the QR code once, pointing at the mobile voting page
+  // build the QR code once, pointing at the mobile voting page.
+  // Use location.pathname (never .href/.hash) — by the time this slide is
+  // reached the presenter has navigated through many slides, so location.hash
+  // is something like "#21" and including it would break the link (deck.js's
+  // hash parser would just load slide 21 of the main deck instead of /vote/).
+  var deckDir = location.pathname.replace(/index\.html$/, "").replace(/\/$/, "");
   new QRCode(document.getElementById("qr-holder"), {
-    text: location.href.replace(/index\.html.*$/,"").replace(/\/$/,"") + "/vote/",
+    text: location.origin + deckDir + "/vote/",
     width: 168, height: 168,
     colorDark: "#2E2419", colorLight: "#ffffff"
   });

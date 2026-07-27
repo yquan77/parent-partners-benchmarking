@@ -404,6 +404,18 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
     linear-gradient(180deg, rgba(14,10,5,.30) 0%, rgba(14,10,5,0) 30%, rgba(14,10,5,.20) 52%, rgba(14,10,5,.80) 92%),
     linear-gradient(90deg, rgba(14,10,5,.62) 0%, rgba(14,10,5,.10) 52%, rgba(14,10,5,0) 72%);
 }
+
+/* --- text-at-top variant: for photos whose subject sits along the
+       bottom edge (e.g. a line-up of people), so the caption doesn't
+       land on top of faces. Flips both the layout anchor and the scrim
+       direction — use sparingly, only when the bottom-anchor default
+       genuinely collides with the photo's own subject. ------------- */
+.slide.photo-bg.top{ justify-content:flex-start; }
+.slide.photo-bg.top .scrim{
+  background:
+    linear-gradient(180deg, rgba(14,10,5,.82) 0%, rgba(14,10,5,.24) 40%, rgba(14,10,5,0) 62%, rgba(14,10,5,.10) 100%),
+    linear-gradient(90deg, rgba(14,10,5,.55) 0%, rgba(14,10,5,.08) 50%, rgba(14,10,5,0) 70%);
+}
 .slide.photo-bg .content{
   position:relative; z-index:2;
   padding:var(--slide-pad) var(--slide-pad) clamp(56px,9vh,128px);

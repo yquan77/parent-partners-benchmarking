@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -27,7 +28,7 @@ with sync_playwright() as playwright:
             body=json.dumps([
                 {
                     "slide_index": current["slide_index"],
-                    "updated_at": "2026-07-27T08:00:00Z",
+                    "updated_at": datetime.now(timezone.utc).isoformat(),
                 }
             ]),
         )
@@ -43,7 +44,7 @@ with sync_playwright() as playwright:
     )
     deck.goto(BASE_URL)
     deck.wait_for_load_state("networkidle")
-    assert deck.locator(".slide").count() == 46
+    assert deck.locator(".slide").count() == 47
     assert current["slide_index"] == 0
 
     deck.keyboard.press("m")
@@ -67,7 +68,7 @@ with sync_playwright() as playwright:
     phone.goto(f"{BASE_URL}/my/")
     phone.wait_for_load_state("networkidle")
     phone.wait_for_timeout(250)
-    assert phone.locator("#slide-number").inner_text() == "01 / 46"
+    assert phone.locator("#slide-number").inner_text() == "01 / 47"
     assert phone.locator("#connection-label").inner_text() == "Disambungkan"
 
     deck.bring_to_front()
@@ -77,7 +78,7 @@ with sync_playwright() as playwright:
 
     phone.bring_to_front()
     phone.wait_for_function(
-        "document.querySelector('#slide-number').textContent === '02 / 46'",
+        "document.querySelector('#slide-number').textContent === '02 / 47'",
         timeout=3500,
     )
     phone.wait_for_timeout(250)
@@ -89,11 +90,11 @@ with sync_playwright() as playwright:
     preview.goto(f"{BASE_URL}/my/?preview=35")
     preview.wait_for_load_state("networkidle")
     preview.wait_for_timeout(250)
-    assert preview.locator("#slide-number").inner_text() == "35 / 46"
+    assert preview.locator("#slide-number").inner_text() == "35 / 47"
     assert "menyerahkan tanggungjawab" in preview.locator("#slide-text").inner_text()
 
     overflow_slides = []
-    for slide_number in range(1, 47):
+    for slide_number in range(1, 48):
         preview.goto(
             f"{BASE_URL}/my/?preview={slide_number}",
             wait_until="domcontentloaded",
@@ -114,7 +115,7 @@ with sync_playwright() as playwright:
     review = context.new_page()
     review.goto(f"{BASE_URL}/my/review.html")
     review.wait_for_load_state("networkidle")
-    assert review.locator(".review-item").count() == 46
+    assert review.locator(".review-item").count() == 47
 
     desktop = context.new_page()
     desktop.set_viewport_size({"width": 1440, "height": 900})
@@ -126,4 +127,4 @@ with sync_playwright() as playwright:
     assert not console_errors, console_errors
     browser.close()
 
-print(f"PASS: live Malay sync and 46-slide mapping; screenshots: {ARTIFACTS}")
+print(f"PASS: live Malay sync and 47-slide mapping; screenshots: {ARTIFACTS}")

@@ -1,5 +1,5 @@
 // Bahasa Melayu Malaysia, disemak berdasarkan laras rasmi DBP/KPM.
-// Index array ini mesti kekal sepadan dengan 46 slaid dalam index.html.
+// Index array ini mesti kekal sepadan dengan 47 slaid dalam index.html.
 window.MALAY_SLIDES = [
   {
     label: "Gagasan utama",
@@ -180,6 +180,10 @@ window.MALAY_SLIDES = [
   {
     label: "Interaksi langsung",
     text: "Pada skala 1 hingga 5, sejauh manakah anda ingin mencubanya apabila kembali ke sekolah?"
+  },
+  {
+    label: "Rujukan",
+    text: "Senarai rujukan penuh bagi lima sumber yang digunakan dalam pembentangan ini dipaparkan pada slaid."
   },
   {
     label: "Terima kasih",

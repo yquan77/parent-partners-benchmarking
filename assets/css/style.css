@@ -596,8 +596,8 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
    如果前面放 35 个、后面只放 5 个，读起来是「学生变少了」。
    真正要讲的是**同样的 35 个孩子**——原本一位大人对一整排 35 人，
    之后被切成七组、每组五人、每组各有一位大人。
-   所以拆组前后的孩子数量必须一样（都是 35，而且实作上就是同一批
-   DOM 节点搬过去，见下面「拆组动作」那一段），
+   所以上排那 35 个原身**永远留在原地**（只会褪成灰），
+   下面七框里的是从它们身上克隆出来的分身（7×5＝35，数量对得上）。
    唯一在变的是「有几位大人」和「有没有被分组」。
    大人用 clay 色且比孩子大一号，才分得出谁是大人。
    ------------------------------------------------------------------- */
@@ -605,13 +605,11 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .ratio-band:last-child{ margin-bottom:0; }
 /* 两行标题占同一个格子（grid-area 叠放），高度取较高的那一行，
    所以「1 : 35」→「7 组 · 1 : 5」是原地交叉淡入，版面不会往下顶。 */
-.band-heads{ display:grid; justify-items:center; transition:transform .5s cubic-bezier(.22,1.1,.32,1) .1s; }
-/* 标题跟着往下挪一点，孩子落定后「标题 + 七组」还是一整块，不会各在天涯 */
-.slide.split .band-heads{ transform:translateY(clamp(16px,3vh,34px)); }
-.band-heads > .band-head{ grid-area:1 / 1; transition:opacity .45s ease; }
+.band-heads{ display:grid; justify-items:center; }
+.band-heads > .band-head{ grid-area:1 / 1; transition:opacity .8s ease; }
 .band-head--now{ opacity:0; }
 .slide.split .band-head--then{ opacity:0; }
-.slide.split .band-head--now{ opacity:1; transition-delay:.22s; }
+.slide.split .band-head--now{ opacity:1; transition-delay:.35s; }
 .band-head{
   display:flex; align-items:baseline; justify-content:center; gap:14px;
   margin-bottom:12px; flex-wrap:wrap;
@@ -634,28 +632,49 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .band-head--now .band-lab{ color:var(--glow); }
 
 /* -------------------------------------------------------------------
-   拆组动作（1:35 → 7 组 1:5）
+   分身动作（1:35 → 7 组 1:5）
    -------------------------------------------------------------------
-   进场只有 .ug-whole 那一整排；停顿约 2.4s 后 deck.js 的 splitRatio()
-   把那 35 个 <svg> 节点搬进七个 .ug-part 里，用 FLIP（量测搬家前/后
-   位置差 → 先反向 translate 回原位 → 再放行）让同一批 icon 真的「跑」
-   过去，而不是一批淡出、另一批淡入。
-   所以：七组的 kid 容器在 HTML 里是空的，孩子只写一次。
+   两排从头到尾都在画面上，所以没有任何版面跳动：
+   · 上排 .row-origin 的 35 个原身永远不动、不消失，触发后只是慢慢褪成灰
+   · 下排七个 .group-box 虚框和框里的大人，一进场就已经在（很淡）
+   · 触发时由 deck.js 的 splitRatio() 克隆上排每一个 icon，克隆体放进
+     .clone-layer（绝对定位），从原身位置平滑 morph 到框里的落点；
+     落点就是框里那五个 .people-icons--slot 的 icon（本来透明），
+     分身到位后它们显形、克隆体撤走，所以最终版面是干干净净的正常流。
+   ⚠️ 不要改成「把原节点搬下去」：上排一空掉就读成学生变少了。
    ------------------------------------------------------------------- */
-/* 高度写死的舞台：同一个 .band-row 拆组前 align-self:start（贴上缘）、
-   拆完 align-self:end（贴下缘）。差出来的那段就是孩子往下跑的距离，
-   而因为舞台高度固定，眉标和下面那段文字不会被顶动。 */
-.ratio-stage{ height:clamp(126px,16vh,190px); display:grid; }
-.ratio-stage > .band-row{ grid-area:1 / 1; align-self:start; }
-.slide.split .ratio-stage > .band-row{ align-self:end; }
-.ug-part{ display:none; }
-.slide.split .ug-part{ display:flex; }
-.slide.split .ug-whole{ display:none; }
-/* 正在飞的那批：popIn 会用 forwards 把 transform 锁成 none、盖掉我们的
-   inline transform，所以飞行期间必须把 animation 整个关掉。 */
-.p-fig.flying{ animation:none !important; }
-/* 大人前后同一个颜色：多出来的是「同一种大人」，不是另一种人。
-   前后的差别交给孩子（灰 → 亮）和数字去讲。 */
+.ratio-stage{ position:relative; display:flex; flex-direction:column; align-items:center;
+  gap:clamp(26px,4.4vh,52px); }
+/* 上排的原身：触发后原地褪色。只动 color——opacity 被 popIn 的 forwards
+   锁着，改不动，而 color 不在 keyframes 里，所以过渡才吃得到。 */
+.row-origin .people-icons--kid .p-fig{ transition:color 1.1s ease .1s; }
+.slide.split .row-origin .people-icons--kid .p-fig{ color:#6E6555; }
+.slide.split .row-origin .people-icons--adult .p-fig{ color:#8A5946; transition:color 1.1s ease .1s; }
+
+/* 七个虚框：若隐若现，不抢戏；孩子落定后才稍微亮一点点 */
+.row-groups{ align-items:stretch; }
+.group-box{
+  display:flex; flex-direction:column; align-items:center; gap:9px;
+  padding:10px clamp(8px,1vw,14px) 11px;
+  border:1px dashed rgba(198,241,53,.20); border-radius:12px;
+  background:rgba(198,241,53,.022);
+  transition:border-color .9s ease, background-color .9s ease;
+}
+.slide.split .group-box{ border-color:rgba(198,241,53,.42); background:rgba(198,241,53,.05); }
+.group-box .people-icons{ --pgap:4px; }
+/* 框里的落点：先隐形（也不要跑 popIn，不然进场就自己冒出来了），
+   等分身飞到才显形。显形是瞬间的（不做淡入）：那一刻分身正好压在它身上，像素重合，
+   所以看不出交接；淡入反而会露出「两层各半透明」的破绽。 */
+.people-icons--slot .p-fig{ animation:none !important; opacity:0; transform:none; }
+.slide.landed .people-icons--slot .p-fig{ opacity:1; }
+
+/* 分身图层：只负责飞，飞完清空。pointer-events 关掉，纯视觉。 */
+.clone-layer{ position:absolute; inset:0; pointer-events:none; z-index:3; }
+.p-clone{
+  position:absolute; transform:none; opacity:1;
+  color:var(--glow); filter:none; will-change:transform;
+  animation:none !important;   /* 别让 popIn 的 forwards 抢走 transform */
+}
 
 /* 密集阵列：278 个小人形铺成一片，人次的「量」用密度呈现，不用柱状图 */
 .people-field{

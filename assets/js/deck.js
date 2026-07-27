@@ -105,78 +105,81 @@
     });
   }
 
-  // ---- 师生比那一页：1:35 → 7 组 1:5 的拆分动作 -----------------------
-  // 演出分两拍，但不用讲者按键：进场只有上面那一整排 35 人（暗色），
-  // 停顿 DWELL 之后自己拆开。拆的时候不换页、也不重建 icon——
-  // 是同一批 <svg> 节点被搬进七个组里，再用 FLIP 让它们「跑」过去。
-  const RATIO_DWELL = 2400;   // 讲完「我一个人对着一整班」大概就是这么久
-  const RATIO_MOVE = 480;     // 位移本身：够慢才有分量，再慢就拖
+  // ---- 师生比那一页：1:35 → 7 组 1:5 的分身动作 -----------------------
+  // 不用讲者按键，停顿 DWELL 之后自己演。两排从头到尾都在画面上：
+  //   上排 35 个原身**留在原地**，只是慢慢褪成灰（人还在，这里剩影子）；
+  //   同时替每一个原身克隆一个分身，从原身的位置平滑 morph 到下面
+  //   七个虚框里的落点（每框五个）。分身到位 → 框里本来透明的那五个
+  //   icon 显形、克隆体撤走，最终留下的是正常文档流，不是一堆绝对定位。
+  // ⚠️ 之前做过「把原节点搬下去」的版本，被否决了：上排一空掉，
+  //    读起来就变成「学生变少了」。原身绝对不可以离开。
+  const RATIO_DWELL = 2800;   // 讲完「我一个人对着一整班」大概就是这么久
+  const RATIO_MOVE = 1150;    // 分身飞行：慢，要的是 morph，不是弹射
+  const RATIO_EASE = "cubic-bezier(.45,.02,.2,1)";  // 缓起缓收，无 overshoot
 
   function armRatioSplit(slide) {
-    const row = slide.querySelector(".band-row");
-    if (!row) return;
-    if (!row.dataset.pristine) row.dataset.pristine = row.innerHTML; // 供回翻时还原
     if (splitTimer) clearTimeout(splitTimer);
     splitTimer = setTimeout(() => { splitTimer = null; splitRatio(slide); }, RATIO_DWELL);
   }
 
+  // 回翻时收干净：原身本来就没动过，所以只要去掉 class、倒掉分身图层
   function resetRatioSplit(slide) {
     if (splitTimer) { clearTimeout(splitTimer); splitTimer = null; }
-    slide.classList.remove("split");
-    const row = slide.querySelector(".band-row");
-    if (row && row.dataset.pristine) row.innerHTML = row.dataset.pristine;
+    slide.classList.remove("split", "landed");
+    const layer = slide.querySelector(".clone-layer");
+    if (layer) layer.textContent = "";
   }
 
   function splitRatio(slide) {
-    const row = slide.querySelector(".band-row");
-    const whole = row.querySelector(".ug-whole");
-    const parts = Array.from(row.querySelectorAll(".ug-part"));
-    if (!whole || parts.length !== 7) return;
-    const kids = Array.from(whole.querySelectorAll(".people-icons--kid .p-fig"));
-    const lead = whole.querySelector(".people-icons--adult .p-fig");
-    if (kids.length !== 35) return;
+    const layer = slide.querySelector(".clone-layer");
+    const origins = Array.from(slide.querySelectorAll(".row-origin .people-icons--kid .p-fig"));
+    const boxes = Array.from(slide.querySelectorAll(".group-box"));
+    if (!layer || boxes.length !== 7 || origins.length !== 35) return;
 
-    // FIRST：搬家前的位置
-    const movers = lead ? kids.concat([lead]) : kids;
-    const first = movers.map((el) => el.getBoundingClientRect());
-
-    // 搬家：同一批节点换爸爸，不销毁重建，位移才连贯。
-    // 那一位大人也一起飞——他成为第一组的大人，另外六位才是新 pop 出来的。
-    parts.forEach((g, gi) => {
-      const box = g.querySelector(".people-icons--kid");
-      for (let k = 0; k < 5; k++) box.appendChild(kids[gi * 5 + k]);
+    // 落点＝框里那五个本来透明的 icon。用真的落点量测，分身才会正好停在
+    // 它们身上，之后显形/撤走才看不出接缝。
+    const targets = [];
+    boxes.forEach((b) => {
+      b.querySelectorAll(".people-icons--slot .p-fig").forEach((t) => targets.push(t));
     });
-    if (lead) {
-      const slot = parts[0].querySelector(".people-icons--adult");
-      slot.innerHTML = "";              // 换掉第一组那位预生成的大人，免得站两个
-      slot.appendChild(lead);
-    }
-    slide.classList.add("split");   // 七组现身 + 标题换行 + 整排收起
+    if (targets.length !== 35) return;
 
-    // LAST：搬家后的位置 → 先反向 translate 钉回原处，看起来还没动
-    const last = movers.map((el) => el.getBoundingClientRect());
-    movers.forEach((el, n) => {
-      el.classList.add("flying");
-      el.style.transition = "none";
-      el.style.transform =
-        `translate(${first[n].left - last[n].left}px, ${first[n].top - last[n].top}px)`;
-      // 颜色/透明度也要从「暗色的旧样子」起跑，不然一搬家就瞬间亮了
-      el.style.opacity = el === lead ? "1" : "0.6";
-      if (el !== lead) el.style.color = "#7E7361";
-    });
-    void row.offsetWidth;   // 强制 reflow，让上面那一帧真的成立
+    slide.classList.add("split");   // 上排开始褪灰 + 虚框变清楚 + 标题换行
+    layer.textContent = "";
+    const lr = layer.getBoundingClientRect();
 
-    // PLAY：放行。同一组的五个孩子几乎一起走，组与组之间错开一点，
-    // 读起来是「一组一组跑进去」，不是三十五个各走各的。
-    movers.forEach((el, n) => {
-      const d = el === lead ? 0 : 30 + Math.floor(n / 5) * 55 + (n % 5) * 16;
-      el.style.transition =
-        `transform ${RATIO_MOVE}ms cubic-bezier(.22,1.28,.32,1) ${d}ms,` +
-        `opacity ${RATIO_MOVE}ms ease ${d}ms, color ${RATIO_MOVE}ms ease ${d}ms`;
-      el.style.transform = "none";
-      el.style.opacity = "1";
-      el.style.color = "";
+    // 克隆：新节点，原身一根寒毛都不动
+    const clones = origins.map((el, n) => {
+      const a = el.getBoundingClientRect();
+      const b = targets[n].getBoundingClientRect();
+      const c = el.cloneNode(true);
+      c.setAttribute("class", "p-fig p-clone");
+      c.style.cssText =
+        `left:${a.left - lr.left}px; top:${a.top - lr.top}px;` +
+        `width:${a.width}px; height:${a.height}px;`;
+      layer.appendChild(c);
+      return { c, dx: b.left - a.left, dy: b.top - a.top };
     });
+    void layer.offsetWidth;   // 先让「停在原身身上」这一帧成立
+
+    // 放行：同组五个几乎一起走，组与组之间错开一点点，读起来是
+    // 「一组一组走过去」；错开幅度刻意小，整体还是一片缓缓流动。
+    clones.forEach(({ c, dx, dy }, n) => {
+      const d = Math.floor(n / 5) * 90 + (n % 5) * 18;
+      c.style.transition = `transform ${RATIO_MOVE}ms ${RATIO_EASE} ${d}ms`;
+      c.style.transform = `translate(${dx}px, ${dy}px)`;
+    });
+
+    // 全部落地：框里的五个显形（此刻和分身完全重叠，看不出交接），
+    // 下一帧再撤掉分身图层，版面回到正常文档流。
+    const total = RATIO_MOVE + 6 * 90 + 4 * 18 + 40;
+    setTimeout(() => {
+      if (!slide.classList.contains("split")) return;   // 已经翻走了就算了
+      slide.classList.add("landed");
+      requestAnimationFrame(() => {
+        if (slide.classList.contains("landed")) layer.textContent = "";
+      });
+    }, total);
   }
 
   async function startLiveResults(slide) {

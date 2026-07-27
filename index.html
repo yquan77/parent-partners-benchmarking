@@ -107,7 +107,7 @@
   </section>
 
   <!-- ============ 5. 反转：那天放学以后（v2 新增） ============ -->
-  <section class="slide">
+  <section class="slide slide--object">
     <div class="slide-inner">
       <p class="sub anim" style="margin-bottom:26px;">但是那天放学以后，发生了一件我当时没有很在意、后来一直记得的事。<br>一位妈妈回家问她儿子：<b>你喜欢妈咪去你学校吗？</b>孩子说「当然开心啊」。<br>她再问「那我下次还可以去吗？」——</p>
       <div class="sticky anim d2" style="--tilt:1.2deg;">
@@ -160,26 +160,53 @@
   </section>
 
   <!-- ============ 10. 为什么要让家长进课堂：师生比（v2 新增） ============
-       只讲 1:35 → 1:5 这两个硬数字。刻意不换算成「被看见的机会多几倍」——
+       只讲 1:35 → 1:7 这两个硬数字。刻意不换算成「被看见的机会多几倍」——
        那是推销式比喻，不是记录里有的东西。-->
   <section class="slide dark slide--object">
     <div class="slide-inner">
       <div class="eyebrow anim">为什么要让家长进课堂</div>
-      <div class="people-duo anim d1">
-        <div class="people-group people-group--then">
-          <div class="g-num">1 : 35</div>
-          <!-- 35 = 7×5，宽度刻意锁成刚好七个，排成一个整齐的方阵；
-               留成不规则的尾行会让人以为是随手放的，而不是「一班的人数」 -->
-          <div class="people-icons people-icons--dim" data-count="35" data-step="0.02"
-               style="--psize:21px; --pgap:8px; width:calc(21px * 7 + 8px * 6);"></div>
-          <div class="g-lab">平常上课 · 我一个人</div>
+      <!-- 上下两条带子里都是同样的 35 个孩子（数量一定要一样，
+           少画会读成「学生变少了」）。变的只有：大人从 1 位变 5 位，
+           一整排被切成五组。所以是 1:35 → 1:7。 -->
+      <div class="ratio-band anim d1">
+        <div class="band-head">
+          <span class="band-num">1 : 35</span>
+          <span class="band-lab">平常上课 · 我一个人，对着一整班</span>
         </div>
-        <div class="p-link">→</div>
-        <div class="people-group">
-          <div class="g-num">1 : 5</div>
-          <div class="people-icons" data-count="5" data-step="0.12" data-delay="0.9"
-               style="--psize:clamp(30px,4.4vw,62px); --pgap:clamp(9px,1.2vw,18px);"></div>
-          <div class="g-lab">家长进来那一天 · 一位大人带五个</div>
+        <div class="band-row">
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.12"></div>
+            <div class="people-icons people-icons--kid people-icons--dim" data-count="35" data-step="0.016" data-delay="0.22"
+                 style="width:calc(14px * 35 + 4px * 34);"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ratio-band ratio-band--now anim d2">
+        <div class="band-head">
+          <span class="band-num">5 组 · 1 : 7</span>
+          <span class="band-lab">家长进来那一天 · 分成五组，一位大人对七个孩子</span>
+        </div>
+        <div class="band-row">
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.95"></div>
+            <div class="people-icons people-icons--kid" data-count="7" data-step="0.03" data-delay="1.02" style="width:calc(14px * 7 + 4px * 6);"></div>
+          </div>
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.05"></div>
+            <div class="people-icons people-icons--kid" data-count="7" data-step="0.03" data-delay="1.12" style="width:calc(14px * 7 + 4px * 6);"></div>
+          </div>
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.15"></div>
+            <div class="people-icons people-icons--kid" data-count="7" data-step="0.03" data-delay="1.22" style="width:calc(14px * 7 + 4px * 6);"></div>
+          </div>
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.25"></div>
+            <div class="people-icons people-icons--kid" data-count="7" data-step="0.03" data-delay="1.32" style="width:calc(14px * 7 + 4px * 6);"></div>
+          </div>
+          <div class="unit-group">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.35"></div>
+            <div class="people-icons people-icons--kid" data-count="7" data-step="0.03" data-delay="1.42" style="width:calc(14px * 7 + 4px * 6);"></div>
+          </div>
         </div>
       </div>
       <p class="sub anim d3" style="margin-top:4vh;">在讲我怎么做之前，我想先回答一个更根本的问题：<b>为什么要让家长进来？</b><br>家长入班真正改变的，不是我的工作量，是<b>师生比</b>——<br>是每一个孩子被听见、被回应、被等待的时间。</p>
@@ -215,7 +242,7 @@
   <section class="slide dark">
     <div class="slide-inner">
       <p class="sub anim" style="margin-bottom:28px;">要把课堂从「一人对 35 人」，变成分组、动手、当场放手让孩子试错，<br>我一个人做不到——我需要教室里多几双手。</p>
-      <p class="lead anim-focus d2">接下来这四步，<br>不是我怎么<b>管理</b>家长志工，<br>是我怎么把这几双手，<br>变成<span class="hand">教学法</span>的一部分。</p>
+      <p class="lead anim-focus d2">接下来这四步，<br>不是我怎么<b>管理</b>课堂志愿者，<br>是我怎么把这几双手，<br>变成<span class="hand">教学法</span>的一部分。</p>
       <p class="sub anim d3" style="margin-top:28px;">而不是额外的人情。</p>
     </div>
   </section>

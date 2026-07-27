@@ -5,6 +5,7 @@
   const counter = document.getElementById("slide-counter");
   let i = 0;
   let liveResultsTimer = null;
+  let splitTimer = null;
 
   slides.forEach((_, idx) => {
     const dot = document.createElement("div");
@@ -44,11 +45,14 @@
   function onEnter(slide) {
     if (slide.querySelector("[data-count-to]")) animateCounts(slide);
     if (slide.querySelector("[data-count]")) buildPeople(slide);
+    if (slide.classList.contains("ratio-split")) armRatioSplit(slide);
     if (slide.dataset.role === "live-results") startLiveResults(slide);
   }
   function onLeave(slide) {
     // leaving the shield slide re-arms it, so stepping back shows the dark room
     if (slide.classList.contains("uv-reveal")) slide.classList.remove("lit");
+    // same idea on the ratio slide: rewind it to the 1:35 row so it can replay
+    if (slide.classList.contains("ratio-split")) resetRatioSplit(slide);
     if (slide.dataset.role === "live-results" && liveResultsTimer) {
       clearInterval(liveResultsTimer);
       liveResultsTimer = null;
@@ -98,6 +102,80 @@
           `style="--d:${(base + k * step).toFixed(3)}s" aria-hidden="true">${FIG}</svg>`;
       }
       box.innerHTML = html;
+    });
+  }
+
+  // ---- 师生比那一页：1:35 → 7 组 1:5 的拆分动作 -----------------------
+  // 演出分两拍，但不用讲者按键：进场只有上面那一整排 35 人（暗色），
+  // 停顿 DWELL 之后自己拆开。拆的时候不换页、也不重建 icon——
+  // 是同一批 <svg> 节点被搬进七个组里，再用 FLIP 让它们「跑」过去。
+  const RATIO_DWELL = 2400;   // 讲完「我一个人对着一整班」大概就是这么久
+  const RATIO_MOVE = 480;     // 位移本身：够慢才有分量，再慢就拖
+
+  function armRatioSplit(slide) {
+    const row = slide.querySelector(".band-row");
+    if (!row) return;
+    if (!row.dataset.pristine) row.dataset.pristine = row.innerHTML; // 供回翻时还原
+    if (splitTimer) clearTimeout(splitTimer);
+    splitTimer = setTimeout(() => { splitTimer = null; splitRatio(slide); }, RATIO_DWELL);
+  }
+
+  function resetRatioSplit(slide) {
+    if (splitTimer) { clearTimeout(splitTimer); splitTimer = null; }
+    slide.classList.remove("split");
+    const row = slide.querySelector(".band-row");
+    if (row && row.dataset.pristine) row.innerHTML = row.dataset.pristine;
+  }
+
+  function splitRatio(slide) {
+    const row = slide.querySelector(".band-row");
+    const whole = row.querySelector(".ug-whole");
+    const parts = Array.from(row.querySelectorAll(".ug-part"));
+    if (!whole || parts.length !== 7) return;
+    const kids = Array.from(whole.querySelectorAll(".people-icons--kid .p-fig"));
+    const lead = whole.querySelector(".people-icons--adult .p-fig");
+    if (kids.length !== 35) return;
+
+    // FIRST：搬家前的位置
+    const movers = lead ? kids.concat([lead]) : kids;
+    const first = movers.map((el) => el.getBoundingClientRect());
+
+    // 搬家：同一批节点换爸爸，不销毁重建，位移才连贯。
+    // 那一位大人也一起飞——他成为第一组的大人，另外六位才是新 pop 出来的。
+    parts.forEach((g, gi) => {
+      const box = g.querySelector(".people-icons--kid");
+      for (let k = 0; k < 5; k++) box.appendChild(kids[gi * 5 + k]);
+    });
+    if (lead) {
+      const slot = parts[0].querySelector(".people-icons--adult");
+      slot.innerHTML = "";              // 换掉第一组那位预生成的大人，免得站两个
+      slot.appendChild(lead);
+    }
+    slide.classList.add("split");   // 七组现身 + 标题换行 + 整排收起
+
+    // LAST：搬家后的位置 → 先反向 translate 钉回原处，看起来还没动
+    const last = movers.map((el) => el.getBoundingClientRect());
+    movers.forEach((el, n) => {
+      el.classList.add("flying");
+      el.style.transition = "none";
+      el.style.transform =
+        `translate(${first[n].left - last[n].left}px, ${first[n].top - last[n].top}px)`;
+      // 颜色/透明度也要从「暗色的旧样子」起跑，不然一搬家就瞬间亮了
+      el.style.opacity = el === lead ? "1" : "0.6";
+      if (el !== lead) el.style.color = "#7E7361";
+    });
+    void row.offsetWidth;   // 强制 reflow，让上面那一帧真的成立
+
+    // PLAY：放行。同一组的五个孩子几乎一起走，组与组之间错开一点，
+    // 读起来是「一组一组跑进去」，不是三十五个各走各的。
+    movers.forEach((el, n) => {
+      const d = el === lead ? 0 : 30 + Math.floor(n / 5) * 55 + (n % 5) * 16;
+      el.style.transition =
+        `transform ${RATIO_MOVE}ms cubic-bezier(.22,1.28,.32,1) ${d}ms,` +
+        `opacity ${RATIO_MOVE}ms ease ${d}ms, color ${RATIO_MOVE}ms ease ${d}ms`;
+      el.style.transform = "none";
+      el.style.opacity = "1";
+      el.style.color = "";
     });
   }
 

@@ -165,59 +165,66 @@
        ⚠️ 分组数字来源核对过：写字课逐字稿原话「同學們分成七個組別」，
        家长心得回馈里多位家长写「带领五位一年级的学生」——所以是
        七组、每组五人（7×5=35），不是五组七人，不要改回去。 -->
-  <section class="slide dark slide--object">
+  <!-- 分两拍演：进场只有 1:35 那一排（暗色）；停顿一下之后，同一批 35 个孩子
+       的 DOM 节点被搬进七个组里、用 FLIP 位移「跑」过去，七位大人依序 pop 进来，
+       「7 组 · 1 : 5」这行字才淡入。不换页、不用点，逻辑在 deck.js 的 splitRatio()。 -->
+  <section class="slide dark slide--object ratio-split">
     <div class="slide-inner">
       <div class="eyebrow anim">为什么要让家长进课堂</div>
-      <!-- 上下两条带子里都是同样的 35 个孩子（数量一定要一样，
-           少画会读成「学生变少了」）。变的只有：大人从 1 位变 7 位，
-           一整排被切成七组。所以是 1:35 → 1:5。 -->
+      <!-- 前后都是同样的 35 个孩子（数量一定要一样，少画会读成「学生变少了」）。
+           变的只有：大人从 1 位变 7 位，一整排被切成七组。所以是 1:35 → 1:5。 -->
       <div class="ratio-band anim d1">
-        <div class="band-head">
-          <span class="band-num">1 : 35</span>
-          <span class="band-lab">平常上课 · 我一个人，对着一整班</span>
+        <!-- 两行标题叠在同一个 grid 格子里，交叉淡入，所以拆组时版面不会跳 -->
+        <div class="band-heads">
+          <div class="band-head band-head--then">
+            <span class="band-num">1 : 35</span>
+            <span class="band-lab">平常上课 · 我一个人，对着一整班</span>
+          </div>
+          <div class="band-head band-head--now">
+            <span class="band-num">7 组 · 1 : 5</span>
+            <span class="band-lab">家长进来那一天 · 分成七组，一位大人对五个孩子</span>
+          </div>
         </div>
+        <!-- 固定高度的舞台：拆组前那一排贴上缘，拆完的七组贴下缘。
+             高度写死，所以孩子是真的往下「跑」了一段，而版面不会跳。 -->
+        <div class="ratio-stage">
         <div class="band-row">
-          <div class="unit-group">
+          <!-- 拆组前：一位大人 + 一整排 35 人。这 35 个节点会被搬去下面七组，
+               所以孩子只在这里写一次，七个组的 kid 容器进场时是空的。 -->
+          <div class="unit-group ug-whole">
             <div class="people-icons people-icons--adult" data-count="1" data-delay="0.12"></div>
             <div class="people-icons people-icons--kid people-icons--dim" data-count="35" data-step="0.016" data-delay="0.22"
                  style="width:calc(14px * 35 + 4px * 34);"></div>
           </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.06"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.12"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.18"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.24"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.30"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.36"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
+          <div class="unit-group ug-part">
+            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.42"></div>
+            <div class="people-icons people-icons--kid" style="width:calc(14px * 5 + 4px * 4);"></div>
+          </div>
         </div>
-      </div>
-      <div class="ratio-band ratio-band--now anim d2">
-        <div class="band-head">
-          <span class="band-num">7 组 · 1 : 5</span>
-          <span class="band-lab">家长进来那一天 · 分成七组，一位大人对五个孩子</span>
-        </div>
-        <div class="band-row">
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="0.95"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.02" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.03"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.10" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.11"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.18" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.19"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.26" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.27"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.34" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.35"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.42" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
-          <div class="unit-group">
-            <div class="people-icons people-icons--adult" data-count="1" data-delay="1.43"></div>
-            <div class="people-icons people-icons--kid" data-count="5" data-step="0.03" data-delay="1.50" style="width:calc(14px * 5 + 4px * 4);"></div>
-          </div>
         </div>
       </div>
       <p class="sub anim d3" style="margin-top:4vh;">在讲我怎么做之前，我想先回答一个更根本的问题：<b>为什么要让家长进来？</b><br>家长入班真正改变的，不是我的工作量，是<b>师生比</b>——<br>是每一个孩子被听见、被回应、被等待的时间。</p>

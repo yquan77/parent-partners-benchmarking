@@ -27,17 +27,28 @@
     history.replaceState(null, "", `#${i + 1}`);
   }
 
-  function next() { go(i + 1); }
+  // The UV-shield slide swallows the FIRST "next": that press turns the lamp
+  // on. The second press actually advances. That way the "啪" happens exactly
+  // when the speaker says it, instead of on a timer he cannot catch up with.
+  function next() {
+    const cur = slides[i];
+    if (cur.classList.contains("uv-reveal") && !cur.classList.contains("lit")) {
+      cur.classList.add("lit");
+      return;
+    }
+    go(i + 1);
+  }
   function prev() { go(i - 1); }
 
   // ---- per-slide enter/leave behaviour --------------------------------
   function onEnter(slide) {
     if (slide.querySelector("[data-count-to]")) animateCounts(slide);
-    if (slide.dataset.role === "year-track") buildYearTrack(slide);
-    if (slide.classList.contains("uv-reveal")) triggerReveal(slide);
+    if (slide.querySelector("[data-count]")) buildPeople(slide);
     if (slide.dataset.role === "live-results") startLiveResults(slide);
   }
   function onLeave(slide) {
+    // leaving the shield slide re-arms it, so stepping back shows the dark room
+    if (slide.classList.contains("uv-reveal")) slide.classList.remove("lit");
     if (slide.dataset.role === "live-results" && liveResultsTimer) {
       clearInterval(liveResultsTimer);
       liveResultsTimer = null;
@@ -63,36 +74,31 @@
     });
   }
 
-  // 2023–2026 bars. Heights come from data-sessions; a year with no number
-  // yet renders as a dashed "待填" column instead of inventing data.
-  function buildYearTrack(slide) {
-    const cols = Array.from(slide.querySelectorAll(".year-col"));
-    const nums = cols.map((c) => parseInt(c.dataset.sessions, 10)).filter((n) => !isNaN(n));
-    const max = nums.length ? Math.max(...nums) : 0;
+  // ---- the deck's one people-icon component ---------------------------
+  // <div class="people-icons" data-count="12"> → 12 identical little figures
+  // that pop in one after another. Written once here so 起点5位 / 团队5→12 /
+  // 三年278人次 are literally the same glyph at three different scales.
+  //   data-step  : seconds between two figures (defaults: dense fields faster)
+  //   data-delay : when the first figure appears
+  const FIG =
+    '<circle cx="12" cy="6.6" r="5.4"/>' +
+    '<path d="M3.2 34V23.4C3.2 18 7.1 14.2 12 14.2s8.8 3.8 8.8 9.2V34Z"/>';
 
-    cols.forEach((col, idx) => {
-      if (col.dataset.built) return;
-      col.dataset.built = "1";
-      const s = parseInt(col.dataset.sessions, 10);
-      const p = parseInt(col.dataset.people, 10);
-      const empty = isNaN(s);
-      col.classList.toggle("is-empty", empty);
-      col.innerHTML =
-        `<div class="val">${empty ? "待填" : s + " 场"}</div>` +
-        `<div class="people">${empty || isNaN(p) ? "&nbsp;" : p + " 人次"}</div>` +
-        `<div class="bar"></div>` +
-        `<div class="yr">${col.dataset.year}</div>`;
-      const bar = col.querySelector(".bar");
-      const pct = empty ? 26 : Math.max(12, Math.round((s / max) * 100));
-      setTimeout(() => { bar.style.height = pct + "%"; }, 260 + idx * 130);
+  function buildPeople(slide) {
+    slide.querySelectorAll("[data-count]").forEach((box) => {
+      if (box.dataset.built) return;
+      box.dataset.built = "1";
+      const n = parseInt(box.dataset.count, 10) || 0;
+      const step = parseFloat(box.dataset.step || (n > 40 ? 0.008 : 0.075));
+      const base = parseFloat(box.dataset.delay || 0.18);
+      let html = "";
+      for (let k = 0; k < n; k++) {
+        html +=
+          `<svg class="p-fig" viewBox="0 0 24 34" fill="currentColor" ` +
+          `style="--d:${(base + k * step).toFixed(3)}s" aria-hidden="true">${FIG}</svg>`;
+      }
+      box.innerHTML = html;
     });
-  }
-
-  // lights-out → UV flash → afterglow, layered over the full-bleed photo
-  function triggerReveal(slide) {
-    if (slide.dataset.lit === "1") return;
-    slide.dataset.lit = "1";
-    setTimeout(() => slide.classList.add("lit"), 1400);
   }
 
   async function startLiveResults(slide) {

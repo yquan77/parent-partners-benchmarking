@@ -97,6 +97,20 @@ body{
 .slide--center .sub,
 .slide--center .hand-quote{ margin-left:auto; margin-right:auto; }
 .slide--center .eyebrow{ justify-content:center; }
+/* -------------------------------------------------------------------
+   EXCEPTION TO THE LEFT-EDGE RULE — 「物件型」slide.
+   靠左对齐是给「一段一段的字」用的：眼睛需要一条固定的起跑线。
+   但有些 slide 上只有一件东西（一张便利贴、一组人形 icon、两个圆），
+   那件东西本身就是画面，靠左会在右边留下一块死掉的空白。
+   这类 slide 加 .slide--object 置中，跟满版照片同一个道理。
+   ⚠️ 只给「单一物件」用；只要 slide 上是大段文字，一律回到靠左。
+   ------------------------------------------------------------------- */
+.slide--object .slide-inner{ margin-left:auto; margin-right:auto; text-align:center; }
+.slide--object .sticky,
+.slide--object .sub,
+.slide--object .micro,
+.slide--object .lead{ margin-left:auto; margin-right:auto; }
+.slide--object .eyebrow{ justify-content:center; }
 
 /* ---- dramatic entrances, only on transition slides ----------------- */
 .anim{ opacity:0; }
@@ -233,6 +247,28 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
   font-family:var(--font-hand); font-size:clamp(21px,2.3vw,33px); line-height:1.74;
   color:#2A2115; word-break:keep-all;
 }
+/* 上面那截胶带是 ::after，会往卡片外凸出约 14px；
+   前面紧接着一段文字时要留出这段，否则胶带会压在字上 */
+.sub + .sticky,
+.sub + .sticky-duo{ margin-top:18px; }
+
+/* 便利贴要自己的进场动画：通用的 riseIn 结尾是 transform:none，
+   会把 --tilt 那一点点歪抹掉，纸就变成一个方正的框，手作感全没了。
+   这一支保留 rotate，只动位移与模糊。 */
+.slide.active .sticky.anim{ animation:stickyIn .92s cubic-bezier(.16,1,.3,1) forwards; }
+@keyframes stickyIn{
+  from{ opacity:0; transform:translateY(26px) rotate(var(--tilt,-1.4deg)); filter:blur(14px); }
+  to  { opacity:1; transform:rotate(var(--tilt,-1.4deg));                  filter:blur(0); }
+}
+
+/* 两张便利贴并置 = 同一个人、隔了五个月的两句话，对照本身就是内容 */
+.sticky-duo{
+  display:flex; justify-content:center; align-items:flex-start;
+  gap:clamp(18px,3vw,52px); flex-wrap:wrap;
+}
+.sticky-duo .sticky{ max-width:min(430px,40vw); flex:1 1 340px; }
+.sticky-duo .sticky p{ font-size:clamp(17px,1.75vw,26px); line-height:1.7; }
+.sticky-duo .sticky::after{ width:clamp(56px,6vw,84px); }
 .sticky cite{
   display:block; margin-top:14px; font-style:normal; font-family:var(--font-data);
   font-weight:700; font-size:13px; letter-spacing:.06em; color:var(--clay);
@@ -364,9 +400,12 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .slide.photo-bg .eyebrow{ color:var(--glow); }
 /* a long verbatim quote laid over a photo: still the only focal element,
    but sized so it never turns into a wall of oversized text */
+/* 量测（measure）刻意放宽：这是一段完整的话，不是标语。
+   窄栏会把它切成七八行短句，读起来一顿一顿的、像在念条目；
+   放宽到 ~26 个中文字一行，逗号后面就不用急着换行，语气才连得起来。 */
 .quote-photo{
-  font-size:clamp(20px,2.3vw,32px); font-weight:700; line-height:1.68;
-  max-width:34ch; color:#FBF7EE; text-shadow:0 2px 22px rgba(0,0,0,.6);
+  font-size:clamp(19px,2.05vw,30px); font-weight:700; line-height:1.72;
+  max-width:min(54ch, 70vw); color:#FBF7EE; text-shadow:0 2px 22px rgba(0,0,0,.6);
   border-left:3px solid var(--glow); padding-left:clamp(18px,2vw,28px);
 }
 
@@ -379,6 +418,14 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
   display:inline-flex; align-items:center; gap:8px; margin-bottom:20px;
 }
 .step-mark b{ color:var(--glow-dim); }
+/* 深色页上的 step-mark：底色本来就是 --ink，胶囊会整颗消失，
+   所以改成描边＋极淡的底，形状还在，重量不抢 */
+.slide.dark .step-mark{
+  background:rgba(247,242,234,.09);
+  border:1px solid rgba(247,242,234,.20);
+  color:var(--paper);
+}
+.slide.dark .step-mark b{ color:var(--glow); }
 
 /* ===================================================================
    GLOW-SHIELD SIGNATURE MOMENT (method 4)
@@ -433,7 +480,21 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
   transition:opacity .5s ease;
 }
 .slide.uv-reveal.lit .uv-pre{ opacity:0; pointer-events:none; }
-.uv-pre p{ color:#E6DFCE; font-size:clamp(20px,2.4vw,30px); font-weight:700; line-height:1.7; max-width:24ch; }
+/* 宽度用 px 不用 ch：这个盒子自己是 16px 字号，ch 会以 16px 去算，
+   量测会缩到只剩十个字一行，整段被切碎 */
+.uv-pre-in{ max-width:min(620px, 66vw); }
+.uv-pre p{ color:#E6DFCE; font-size:clamp(20px,2.4vw,30px); font-weight:700; line-height:1.7; }
+/* 揭晓由讲者自己按（见 deck.js：uv-reveal 上的第一次「下一页」＝开灯，
+   第二次才真的翻页），所以这里给讲者一个小提示，不是给观众看的。 */
+.uv-hint{
+  margin-top:clamp(22px,4vh,44px);
+  font-family:var(--font-data); font-weight:700; font-size:11.5px;
+  letter-spacing:.28em; text-transform:uppercase; color:rgba(198,241,53,.66);
+  display:inline-flex; align-items:center; gap:10px;
+  border:1px solid rgba(198,241,53,.28); border-radius:100px; padding:7px 16px;
+  animation:hintPulse 2.4s ease-in-out infinite;
+}
+@keyframes hintPulse{ 0%,100%{ opacity:.45; } 50%{ opacity:1; } }
 /* the child's line, in handwriting, after the reveal */
 .uv-caption{
   position:relative; z-index:4; opacity:0; transform:translateY(18px);
@@ -477,46 +538,127 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 }
 .stat-duo .now .stat-label{ color:var(--glow); }
 /* ===================================================================
-   2023–2026 timeline (场次 / 人次 / 年份)
+   PEOPLE ICONS — 这份 deck 唯一的「人」图形组件，重复使用
    -------------------------------------------------------------------
-   每一年一根柱子。数字写在 HTML 的 data-sessions / data-people 上，
-   柱高由 JS 依 data-sessions ÷ 该组最大值换算，所以填新数字不用改 CSS。
-   还没确定的年份留 data-sessions=""，会显示成「待填」而不是假数据。
+   为什么要有它：这场分享的每一个转折都是「人数」（5 → 12 → 20 → 278），
+   纯数字读起来是统计，一个个长出来的人形读起来是「一个一个来的人」。
+   用法（图形由 JS 依 data-count 生成，不要手写 48 个 SVG）：
+     <div class="people-icons" data-count="5"></div>
+     <div class="people-icons people-icons--dim" data-count="5"></div>
+   尺寸靠 --psize，行距靠 --pgap；进场时 icon 逐个 pop 出来。
+   目前出现在三处，风格一致：起点 5 位 / 团队 5→12 / 三年 278 人次阵列。
    =================================================================== */
-.year-track{
-  display:grid; grid-template-columns:repeat(4,1fr);
-  gap:clamp(14px,2.4vw,40px); align-items:end;
-  height:min(34vh,270px); margin-top:5vh;
+.people-icons{
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:var(--pgap, 1.2vw);
 }
-.year-col{ display:flex; flex-direction:column; justify-content:flex-end; height:100%; }
-.year-col .bar{
-  position:relative; width:100%; height:0; border-radius:4px 4px 0 0;
-  background:linear-gradient(180deg, var(--glow) 0%, var(--glow-dim) 100%);
-  transition:height 1.1s cubic-bezier(.16,1,.3,1);
+.p-fig{
+  width:var(--psize, 8vh); height:auto; flex:0 0 auto;
+  color:var(--glow); opacity:0;
+  transform:translateY(14px) scale(.84);
+  filter:drop-shadow(0 0 18px rgba(198,241,53,.26));
 }
-.year-col .bar::after{
-  content:''; position:absolute; inset:auto 0 0 0; height:100%;
-  box-shadow:0 0 34px rgba(198,241,53,.28);
+.slide.active .p-fig{
+  animation:popIn .52s cubic-bezier(.2,1.5,.35,1) forwards;
+  animation-delay:var(--d, 0s);
 }
-.year-col.is-empty .bar{
-  background:repeating-linear-gradient(135deg, rgba(185,175,152,.22), rgba(185,175,152,.22) 7px, transparent 7px, transparent 14px);
-  border:1px dashed rgba(185,175,152,.45); border-bottom:0;
+@keyframes popIn{ to{ opacity:var(--op, 1); transform:none; } }
+/* 「之前」的那一组：退成纸灰色、不发光，才衬得出后面那一组 */
+.people-icons--dim .p-fig{ color:#7E7361; --op:.6; filter:none; }
+
+/* 两组并置：左边少、右边多，数量差自己会说话 */
+.people-duo{
+  display:flex; align-items:flex-end; justify-content:center;
+  gap:clamp(26px,6vw,96px); flex-wrap:wrap; margin-top:2vh;
 }
-.year-col .val{
-  font-family:var(--font-data); font-weight:800; font-size:clamp(20px,2.3vw,34px);
-  color:var(--glow); margin-bottom:8px; line-height:1;
+.people-group{ display:flex; flex-direction:column; align-items:center; gap:clamp(14px,2vh,24px); }
+.people-group .people-icons{ max-width:min(30vw,420px); }
+.people-group .g-num{
+  font-family:var(--font-data); font-weight:800; line-height:1;
+  font-size:clamp(30px,4.4vw,72px); color:var(--glow);
 }
-.year-col.is-empty .val{ color:#8E846F; font-size:clamp(13px,1.3vw,16px); font-weight:700; }
-.year-col .people{
-  font-family:var(--font-data); font-weight:700; font-size:12px; letter-spacing:.06em;
-  color:#B9AF98; margin-bottom:14px;
+.people-group .g-lab{
+  font-family:var(--font-data); font-weight:700; font-size:12px;
+  letter-spacing:.16em; text-transform:uppercase; color:#B9AF98;
 }
-.year-col .yr{
-  font-family:var(--font-data); font-weight:800; font-size:clamp(14px,1.5vw,19px);
-  letter-spacing:.08em; color:#D9D2C2; margin-top:14px;
-  padding-top:12px; border-top:1px solid rgba(217,210,194,.22);
+.people-group--then .g-num{ font-size:clamp(22px,2.6vw,40px); color:#7E7361; }
+.people-group--then .g-lab{ color:#7E7361; }
+.people-duo .p-link{
+  font-family:var(--font-data); font-weight:800; font-size:clamp(20px,2.4vw,34px);
+  color:var(--clay); padding-bottom:clamp(30px,7vh,72px);
 }
-.year-col.is-empty .yr{ color:#8E846F; }
+
+/* 密集阵列：278 个小人形铺成一片，人次的「量」用密度呈现，不用柱状图 */
+.people-field{
+  --pf-fig:clamp(9px,1.05vw,15px);
+  --pf-gap:clamp(4px,.5vw,7px);
+  --pf-w:40;                     /* 一行几个（写在 HTML 上） */
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:var(--pf-gap);
+  width:calc(var(--pf-fig) * var(--pf-w) + var(--pf-gap) * (var(--pf-w) - 1));
+  max-width:88vw; margin:0 auto;
+}
+.people-field .p-fig{ width:var(--pf-fig); filter:none; --op:.9; }
+
+/* ===================================================================
+   面积对比（结尾 5 → 11）
+   -------------------------------------------------------------------
+   刻意不用 people-icons：icon 这一招前面已经用过三次，结尾再用一次
+   全场就变成同一个套路。这里改用「圆面积」——圆的直径按 √n 换算，
+   所以两个圆的面积就是 5 : 11 的真实比例，不是随手放大。
+   glow 那一圈用 stroke-dashoffset 慢慢画出来，中间刻意留 1.1s 停顿，
+   让讲者有时间把「你是不是刚好遇到一批好家长」这句问题问完。
+   =================================================================== */
+.area-duo{
+  display:flex; align-items:flex-end; justify-content:center;
+  gap:clamp(26px,7vw,120px); flex-wrap:wrap; margin-top:2vh;
+}
+.area-cell{ display:flex; flex-direction:column; align-items:center; gap:clamp(12px,2vh,22px); }
+.area-disc{ position:relative; width:var(--d); height:var(--d); display:grid; place-items:center; }
+.area-disc .a-ring{ position:absolute; inset:0; width:100%; height:100%; transform:rotate(-90deg); }
+.area-disc .a-ring circle{ fill:none; stroke-width:1.6; }
+.area-disc .a-num{
+  position:relative; font-family:var(--font-data); font-weight:800;
+  font-size:calc(var(--d) * .44); line-height:1; letter-spacing:-.03em;
+}
+.area-cell .a-lab{
+  font-family:var(--font-data); font-weight:700; font-size:12px;
+  letter-spacing:.12em; text-transform:uppercase; color:#B9AF98; text-align:center;
+}
+/* 起点：虚线、灰、没有光 */
+.area-cell--then .a-ring circle{ stroke:#7E7361; stroke-dasharray:5 7; opacity:.75; }
+.area-cell--then .a-num{ color:#7E7361; }
+.area-cell--then .a-lab{ color:#7E7361; }
+/* 现在：实线画出来 + 圆里慢慢亮起来 */
+.area-cell--now .area-disc::before{
+  content:''; position:absolute; inset:0; border-radius:50%; opacity:0;
+  background:radial-gradient(circle at 50% 50%, rgba(198,241,53,.20), rgba(198,241,53,0) 72%);
+  transition:opacity 1.6s ease 1.9s;
+}
+.slide.active .area-cell--now .area-disc::before{ opacity:1; }
+.area-cell--now .a-ring circle{
+  stroke:var(--glow); stroke-linecap:round;
+  stroke-dasharray:302; stroke-dashoffset:302;
+  filter:drop-shadow(0 0 12px rgba(198,241,53,.45));
+}
+.slide.active .area-cell--now .a-ring circle{
+  animation:drawRing 1.6s cubic-bezier(.32,.72,.2,1) 1.1s forwards;
+}
+@keyframes drawRing{ to{ stroke-dashoffset:0; } }
+.area-cell--now .a-num{
+  color:var(--glow); opacity:0;
+  animation:none;
+}
+.slide.active .area-cell--now .a-num{ animation:riseIn .9s cubic-bezier(.16,1,.3,1) 1.55s forwards; }
+.area-cell--now .a-lab{ color:var(--glow); }
+
+/* ===================================================================
+   三年累积总量（44 场 / 278 人次）
+   -------------------------------------------------------------------
+   ⚠️ 逐年柱状图已刻意移除：2024(25场) vs 2025(5场) 的落差会被误读成
+   「参与度下滑」，实际上 2025 有两场是正常上课日、不计志愿者活动。
+   所以只呈现三年累积总量，规模感交给 .people-field 的 icon 阵列去讲。
+   =================================================================== */
 .total-row{ display:flex; gap:clamp(28px,5vw,72px); flex-wrap:wrap; align-items:flex-end; }
 .total-row .t-num{
   font-family:var(--font-data); font-weight:800; letter-spacing:-.03em;
@@ -525,6 +667,9 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .total-row .t-num .t-unit{
   font-family:var(--font-hand); font-size:.36em; color:var(--glow); margin-left:.16em; vertical-align:.5em;
 }
+/* 跟 icon 阵列同页时用这一档：阵列才是主角，数字退成它的注解，
+   两个都放到最大会打架 */
+.total-row--sm .t-num{ font-size:clamp(44px,5.6vw,88px); }
 .total-row .t-lab{
   font-family:var(--font-data); font-weight:700; font-size:12px; letter-spacing:.18em;
   text-transform:uppercase; color:#B9AF98; margin-top:8px;

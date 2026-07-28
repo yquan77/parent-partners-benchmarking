@@ -5,7 +5,6 @@
   const counter = document.getElementById("slide-counter");
   let i = 0;
   let liveResultsTimer = null;
-  let splitTimer = null;
   let slideHeartbeat = null;
 
   slides.forEach((_, idx) => {
@@ -44,6 +43,17 @@
   // when the speaker says it, instead of on a timer he cannot catch up with.
   function next() {
     const cur = slides[i];
+    // The ratio slide also uses presenter-controlled timing. First "next"
+    // starts the 1:35 → seven groups animation and stays on the slide.
+    // Ignore an accidental second press while the clones are still moving;
+    // once they have landed, the next press advances normally.
+    if (cur.classList.contains("ratio-split")) {
+      if (!cur.classList.contains("split")) {
+        splitRatio(cur);
+        return;
+      }
+      if (!cur.classList.contains("landed")) return;
+    }
     if (cur.classList.contains("uv-reveal") && !cur.classList.contains("lit")) {
       cur.classList.add("lit");
       return;
@@ -56,7 +66,6 @@
   function onEnter(slide) {
     if (slide.querySelector("[data-count-to]")) animateCounts(slide);
     if (slide.querySelector("[data-count]")) buildPeople(slide);
-    if (slide.classList.contains("ratio-split")) armRatioSplit(slide);
     if (slide.dataset.role === "live-results") startLiveResults(slide);
   }
   function onLeave(slide) {
@@ -117,25 +126,21 @@
   }
 
   // ---- 师生比那一页：1:35 → 7 组 1:5 的分身动作 -----------------------
-  // 不用讲者按键，停顿 DWELL 之后自己演。两排从头到尾都在画面上：
+  // 由讲者第一次按「下一页」触发。两排从头到尾都占着版面：
+  //   初始只显示 1:35、一位老师与 35 个学生；
+  //   触发后七个框与七位家长先出现，然后学生才开始分流；
   //   上排 35 个原身**留在原地**，只是慢慢褪成灰（人还在，这里剩影子）；
   //   同时替每一个原身克隆一个分身，从原身的位置平滑 morph 到下面
   //   七个虚框里的落点（每框五个）。分身到位 → 框里本来透明的那五个
   //   icon 显形、克隆体撤走，最终留下的是正常文档流，不是一堆绝对定位。
   // ⚠️ 之前做过「把原节点搬下去」的版本，被否决了：上排一空掉，
   //    读起来就变成「学生变少了」。原身绝对不可以离开。
-  const RATIO_DWELL = 2800;   // 讲完「我一个人对着一整班」大概就是这么久
+  const RATIO_SETUP = 480;    // 先让七个框与七位家长完整出现，再开始分流
   const RATIO_MOVE = 1150;    // 分身飞行：慢，要的是 morph，不是弹射
   const RATIO_EASE = "cubic-bezier(.45,.02,.2,1)";  // 缓起缓收，无 overshoot
 
-  function armRatioSplit(slide) {
-    if (splitTimer) clearTimeout(splitTimer);
-    splitTimer = setTimeout(() => { splitTimer = null; splitRatio(slide); }, RATIO_DWELL);
-  }
-
   // 回翻时收干净：原身本来就没动过，所以只要去掉 class、倒掉分身图层
   function resetRatioSplit(slide) {
-    if (splitTimer) { clearTimeout(splitTimer); splitTimer = null; }
     slide.classList.remove("split", "landed");
     const layer = slide.querySelector(".clone-layer");
     if (layer) layer.textContent = "";
@@ -155,7 +160,7 @@
     });
     if (targets.length !== 35) return;
 
-    slide.classList.add("split");   // 上排开始褪灰 + 虚框变清楚 + 标题换行
+    slide.classList.add("split");   // 标题、七个框与七位家长先出现
     layer.textContent = "";
     const lr = layer.getBoundingClientRect();
 
@@ -167,7 +172,7 @@
       c.setAttribute("class", "p-fig p-clone");
       c.style.cssText =
         `left:${a.left - lr.left}px; top:${a.top - lr.top}px;` +
-        `width:${a.width}px; height:${a.height}px;`;
+        `width:${a.width}px; height:${a.height}px; opacity:0;`;
       layer.appendChild(c);
       return { c, dx: b.left - a.left, dy: b.top - a.top };
     });
@@ -176,14 +181,17 @@
     // 放行：同组五个几乎一起走，组与组之间错开一点点，读起来是
     // 「一组一组走过去」；错开幅度刻意小，整体还是一片缓缓流动。
     clones.forEach(({ c, dx, dy }, n) => {
-      const d = Math.floor(n / 5) * 90 + (n % 5) * 18;
-      c.style.transition = `transform ${RATIO_MOVE}ms ${RATIO_EASE} ${d}ms`;
+      const d = RATIO_SETUP + Math.floor(n / 5) * 90 + (n % 5) * 18;
+      c.style.transition =
+        `transform ${RATIO_MOVE}ms ${RATIO_EASE} ${d}ms, ` +
+        `opacity 120ms linear ${d}ms`;
+      c.style.opacity = "1";
       c.style.transform = `translate(${dx}px, ${dy}px)`;
     });
 
     // 全部落地：框里的五个显形（此刻和分身完全重叠，看不出交接），
     // 下一帧再撤掉分身图层，版面回到正常文档流。
-    const total = RATIO_MOVE + 6 * 90 + 4 * 18 + 40;
+    const total = RATIO_SETUP + RATIO_MOVE + 6 * 90 + 4 * 18 + 40;
     setTimeout(() => {
       if (!slide.classList.contains("split")) return;   // 已经翻走了就算了
       slide.classList.add("landed");

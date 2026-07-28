@@ -9,7 +9,7 @@ HTML slide deck目前共47页，主要内容、真实照片、马来文实时跟
 - ✅ 主deck可运行；第10页手动揭示、动画期间防误跳、完成后翻页、返回重置均通过Playwright测试
 - ✅ JavaScript语法检查、47页马来文映射测试及 `git diff --check` 通过
 - ✅ GitHub Pages现有版本已包含此前完成的马来文同步、引用设计与其他页面修正
-- ⚠️ 本次第10页动画变动待本次收工commit与push
+- ✅ 本次第10页动画变动已commit并push至 `main`
 - ⚠️ 上台前必须到Supabase SQL editor执行 `delete from confidence_ratings;`，清除测试投票
 - ℹ️ repo根目录有未追踪的 `讲稿要点.md`，属于使用者文件，本次不修改、不纳入commit
 
@@ -29,4 +29,4 @@ HTML slide deck目前共47页，主要内容、真实照片、马来文实时跟
 
 ## 🕐 最后更新
 
-2026-07-28 15:00 +08｜Codex @ mr007s-Macbook-Air.local｜Git push：待推
+2026-07-28 15:00 +08｜Codex @ mr007s-Macbook-Air.local｜Git push：✅ 已推

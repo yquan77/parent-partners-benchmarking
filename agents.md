@@ -11,23 +11,31 @@ Yong Quan（1I班主任、UTM课程与教学博士生）要在泰丰华小 lawat
 ## 路线图 checklist
 
 ### 内容与文字
-- [x] 主题、四个方法、开场踩雷故事、结尾金句 定稿
-- [x] 补上「为什么要让家长进课堂」这条学生自主性主线（v2定稿，师生比1:35→1:5、GRR放手模型三层）
-- [x] 学术引用逐条核对出处（Sarana Ibu Bapa MOE 2012、mutualistic goals、boundary-spanning、GRR、Adams & Christenson信任研究），引用页与相关页面左下角小号来源脚注已补齐
+- [x] 主题、开场踩雷故事、结尾金句 定稿
+- [x] 补上「为什么要让家长进课堂」这条学生自主性主线（v2定稿，师生比1:35→1:5）
+- [x] **v4 结构性改写（2026-07-28）**：讲稿定稿改为三招「邀·讲·融」（原「合法性先行/共同目标设定/重新命名/DSKP」四招精简）
+  - 拿掉：「重新命名教育合伙人」整段（改称呼hand-term页、boundary-spanning学术引用页、5→12团队数据页、边界踩坑故事页）
+  - 拿掉：「其实我在训练的不是家长」收束整段（退开一步页、3N吊饰梦工坊20人页、昱杰妈妈「担心一年级孩子做不完」quote、宇乐妈妈quote、GRR三层页）——这些内容摘要仍留在讲稿要点.md末尾「备用材料」区块
+  - 原「方法一：合法性先行」四页→压缩成「这是有官方依据的」1-2页（SdK/SPI Bilangan 1/2018 + Sarana Ibu Bapa好处清单合并）
+  - 新增「邀」（看·问两字诀，1-2页，讲者临场口述举例，slide正文不列举例）
+  - 新增「邀·讲·融」三字总结页，放在结尾号召（翻开下星期那一课·问自己两句）之前，全场收尾前份量最重的一页
+- [x] 学术引用逐条核对出处（Sarana Ibu Bapa MOE 2012、mutualistic goals/boundary-spanning Rudder et al.、Adams & Christenson信任研究、SPI Bilangan 1/2018），引用页与相关页面左下角小号来源脚注已补齐；Fisher & Frey (2013) GRR引用因对应内容被删除已从Reference List移除
 - [x] 数据核实：7组×5人（非5组×7人，已用写字课逐字稿+家长心得核对修正）；三年累积44场278人次（已核对算术）
 
 ### HTML deck
 - [x] 三级字体层级系统、暖色系设计token（米白/暖棕+荧光绿强调色+陶土橙+学术引用灰蓝）
 - [x] 手写字体（Ma Shan Zheng）子集化自嵌，Noto Sans SC / Manrope 子集化自嵌，无CDN依赖
-- [x] 全屏照片组件 + 组合式占位状态，8张真实照片已全部换上（信心皇冠/叶子鸟/写字课马蹄型/郊游趣稻田/荧光盾牌UV/教育合伙人合照/2023首场+2026大扫除并置）
+- [x] 全屏照片组件 + 组合式占位状态，真实照片已换上（信心皇冠/叶子鸟/写字课马蹄型/郊游趣稻田/荧光盾牌UV/2023首场+2026大扫除并置）——「教育合伙人合照」一张因对应slide被删，图档保留在assets/img/但目前未被引用
 - [x] 文字位置变体：`.photo-bg.top`（靠上）、`.photo-bg.split-v`（上下分层），已用在照片主体被文字挡住的几张
-- [x] 人形icon组件（`.people-icons`）：5位起点、7组×5人分身克隆动画（原地变灰+克隆体飞入）、278人次密集阵列；第10页改为讲者按键后先显示7位家长与组框，再执行分组
+- [x] 人形icon组件（`.people-icons`）：5位起点、7组×5人分身克隆动画（原地变灰+克隆体飞入）、278人次密集阵列；师生比页讲者按键后先显示7位家长与组框，再执行分组。v4拿掉「团队5→12」「3N吊饰梦工坊20位」两处icon用法
+- [x] 新增 `.term-duo`（邀页 看/问两字并置）与 `.term-trio`（结尾邀讲融三字总结，glow渐层同 `.stat-hero` 数字量级）两个组件，见 `assets/css/style.css`
 - [x] 荧光盾牌揭晓：讲者点击触发（非自动倒数），实测两次点击行为正常
 - [x] 现场互动投票：Supabase即时星级评分（1-5分「你现在几分想回去试试看」），QR码用vendored qrcode.min.js生成，见下方Supabase章节
-- [x] 全部47张slide（以index.html实际slide数为准）
-- [x] 马来文同步显示功能：讲者翻页写入Supabase，手机端自动跟页；47页马来文重点映射与讲者端QR overlay已完成
-- [x] 叙事与版面细节：第28页制作照→黑场→荧光成品照揭晓、第32页卡片居中、第38页恢复原内容
+- [x] 全部39张slide（v4，以index.html实际slide数为准；v3是47张）
+- [x] 马来文同步显示功能：讲者翻页写入Supabase，手机端自动跟页；`assets/js/malay-content.js` 已同步改成39条，其中4条（SdK/邀 intro/看问duo/邀讲融总结）是AI初稿，**Yong Quan需要校对再上线**
+- [x] 叙事与版面细节：荧光盾牌页制作照→黑场→荧光成品照揭晓
 - [ ] Yong Quan预计还会持续给视觉反馈微调（padding、文字位置、动画细节），属正常迭代，不是遗漏
+- [ ] `assets/js/malay-content.js` 里标注「DRAF AI」的4条翻译需要Yong Quan本人校对
 
 ### 部署与基础设施
 - [x] GitHub repo已建立，Pages已开通（main分支根目录）
@@ -37,7 +45,7 @@ Yong Quan（1I班主任、UTM课程与教学博士生）要在泰丰华小 lawat
 ## 资料夹结构
 ```
 parent-partners-benchmarking/
-├── index.html              # 主deck，47张slide，看顶部HTML注释了解排版规则
+├── index.html              # 主deck，39张slide（v4），看顶部HTML注释了解排版规则
 ├── assets/
 │   ├── css/style.css       # 设计token+全部组件样式
 │   ├── js/

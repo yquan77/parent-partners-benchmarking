@@ -942,6 +942,49 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 /* 跟 icon 阵列同页时用这一档：阵列才是主角，数字退成它的注解，
    两个都放到最大会打架 */
 .total-row--sm .t-num{ font-size:clamp(44px,5.6vw,88px); }
+
+/* ===================================================================
+   「邀」：看 / 问 两个关键词并置
+   -------------------------------------------------------------------
+   v4 讲稿刻意只留「看」「问」两个字＋各自一句解释，三个临场举例
+   （生字簿／汤圆／摄影绘画朋友）讲者口述带过，不进 slide 正文——
+   所以这个组件只需要撑住两个大字＋一行说明，不用留举例的位置。
+   ⚠️ 想加例子进来之前，先回讲稿确认这不是被要求拿掉的内容。
+   =================================================================== */
+.term-duo{
+  display:flex; justify-content:center; align-items:flex-start;
+  gap:clamp(40px,7vw,120px); flex-wrap:wrap; margin-top:1vh;
+}
+.term-cell{
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+  max-width:min(320px,38vw);
+}
+.term-cell .hand-term{ font-size:clamp(64px,9vw,140px); line-height:1; }
+.term-cell .sub{ text-align:center; }
+
+/* ===================================================================
+   收尾「邀 · 讲 · 融」三字总结页
+   -------------------------------------------------------------------
+   全场收尾前份量最重的一页：三个字用跟 .stat-hero 数字同等级的
+   glow 渐层处理，让它跟前面任何一个「一级重点」站在同一个视觉量级，
+   不只是三个手写字摆在一起。
+   =================================================================== */
+.term-trio{
+  display:flex; justify-content:center; align-items:flex-start;
+  gap:clamp(28px,5.5vw,88px); flex-wrap:wrap; margin-top:1.2vh;
+}
+.trio-cell{
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  max-width:min(260px,30vw);
+}
+.trio-cell .trio-word{
+  font-family:var(--font-hand); font-weight:400; line-height:1;
+  font-size:clamp(72px,11vw,168px);
+  background:linear-gradient(178deg, var(--glow) 6%, var(--glow-dim) 92%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 40px rgba(198,241,53,.22));
+}
+.trio-cell .sub{ text-align:center; color:#B9AF98; }
 .total-row .t-lab{
   font-family:var(--font-data); font-weight:700; font-size:12px; letter-spacing:.18em;
   text-transform:uppercase; color:#B9AF98; margin-top:8px;

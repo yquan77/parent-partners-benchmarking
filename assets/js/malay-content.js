@@ -1,5 +1,11 @@
 // Bahasa Melayu Malaysia, disemak berdasarkan laras rasmi DBP/KPM.
-// Index array ini mesti kekal sepadan dengan 47 slaid dalam index.html.
+// Index array ini mesti kekal sepadan dengan 39 slaid dalam index.html (v4).
+//
+// ⚠️ v4: entri #14, #16, #17, #33 (SdK, 邀 intro, 邀 看/问, 邀讲融总结)
+// adalah draf AI — Yong Quan perlu menyemak semula sebelum digunakan
+// secara langsung. Semua entri lain diwarisi terus daripada v3 (sudah
+// disemak), hanya kedudukan indeks yang berubah kerana beberapa slaid
+// v3 telah dibuang (方法三/重新命名, GRR 收束整段) atau ditambah.
 window.MALAY_SLIDES = [
   {
     label: "Gagasan utama",
@@ -50,24 +56,28 @@ window.MALAY_SLIDES = [
     text: "Saya mahu murid berani mencuba dan membetulkan kesilapan sendiri—namun seorang diri, saya tidak mampu melakukannya untuk 35 orang murid serentak."
   },
   {
-    label: "Empat langkah seterusnya",
-    text: "Empat langkah ini menjadikan bantuan beberapa pasang tangan sebagai sebahagian daripada pedagogi, bukan bantuan sampingan."
+    label: "Tiga langkah seterusnya",
+    text: "Tiga langkah ini menjadikan bantuan beberapa pasang tangan sebagai sebahagian daripada pedagogi, bukan bantuan sampingan."
   },
   {
-    label: "Langkah 1 · Kesahan didahulukan",
-    text: "Sebelum melibatkan ibu bapa, semak pekeliling dan dapatkan persetujuan pihak pentadbir supaya setiap langkah dilaksanakan melalui saluran yang betul."
+    // ⚠️ DRAF AI — belum disemak. Menggantikan 4 slaid v3 (kesahan/Pekeliling)
+    // yang kini dipadatkan menjadi 1 slaid ini + slaid Sarana Ibu Bapa.
+    label: "Asas rasmi program ini",
+    text: "Amalan ini bukan ciptaan saya sendiri—ia dikenali sebagai SdK (Sukarelawan Di Dalam Kelas) di bawah SPI Bilangan 1/2018 KPM, dan masih dirujuk dalam Buku Pengurusan HEM sekolah pada 2024."
   },
   {
     label: "Sarana Ibu Bapa",
     text: "Semua manfaat pelibatan yang dihuraikan oleh Kementerian Pendidikan dinikmati oleh anak, bukan oleh guru."
   },
   {
-    label: "Daripada dasar kepada amalan",
-    text: "Idea ini bukan ciptaan saya; Kementerian Pendidikan sememangnya menggalakkannya. Tugas saya hanyalah menerapkannya dalam amalan."
+    // ⚠️ DRAF AI — belum disemak.
+    label: "Langkah 1 · Jemput",
+    text: "Langkah pertama ialah mencari ibu bapa yang sudi hadir—bergantung kepada dua perkara sahaja."
   },
   {
-    label: "Langkah yang boleh dibuat segera",
-    text: "Anda boleh bermula dengan menyemak satu pekeliling dan berbincang dengan pentadbir—tanpa menunggu sekumpulan ibu bapa yang sedia membantu."
+    // ⚠️ DRAF AI — belum disemak.
+    label: "Lihat dan tanya",
+    text: "Lihat—kekuatan ibu bapa yang sudah terserlah dalam buku latihan anak. Tanya—cukup dengan bertanya siapa yang boleh membantu, tanpa perlu menunggu nasib baik."
   },
   {
     label: "Langkah 2 · Matlamat bersama",
@@ -90,23 +100,7 @@ window.MALAY_SLIDES = [
     text: "Kadangkala bukan ibu bapa yang enggan hadir; pintu pelibatan tidak pernah benar-benar dibuka kepada mereka."
   },
   {
-    label: "Langkah 3 · Menamakan semula peranan",
-    text: "Saya menamakan kumpulan ibu bapa ini sebagai Rakan Kongsi Pendidikan."
-  },
-  {
-    label: "Daripada pembantu kepada rakan",
-    text: "Yang berubah bukan sekadar panggilan, tetapi kedudukan ibu bapa sebagai rakan yang terlibat dalam reka bentuk pengajaran."
-  },
-  {
-    label: "Pelibatan boleh berkembang",
-    text: "Dalam kelas yang sama, pasukan ibu bapa berkembang daripada lima orang pada awal tahun kepada dua belas orang pada akhir tahun."
-  },
-  {
-    label: "Sempadan peranan",
-    text: "Apabila sempadan peranan tidak jelas, muridlah yang paling terjejas. Masalahnya bukan pada ibu bapa, tetapi pada cara saya mereka bentuk peranan itu."
-  },
-  {
-    label: "Langkah 4 · Berpandu pada DSKP",
+    label: "Langkah 3 · Berpandu pada DSKP",
     text: "Setiap aktiviti kekal dalam kerangka DSKP—bukan aktiviti tambahan di luar waktu pengajaran, tetapi kandungan yang sama diajarkan dengan cara yang berbeza."
   },
   {
@@ -120,26 +114,6 @@ window.MALAY_SLIDES = [
   {
     label: "Suara ibu bapa",
     text: "Kadangkala keadaan yang dianggap “di luar kawalan” sebenarnya ialah saat pembelajaran paling hidup."
-  },
-  {
-    label: "Rumusan empat langkah",
-    text: "Latihan sebenar sepanjang tiga tahun ini ialah membantu ibu bapa berani berundur selangkah dan memberi ruang kepada anak."
-  },
-  {
-    label: "Apabila ibu bapa paling ramai",
-    text: "Dalam aktiviti yang disertai 20 orang ibu bapa, ibu bapalah yang mengambil peranan paling kecil—murid sendiri menjadi pengendali gerai."
-  },
-  {
-    label: "Belajar untuk tidak terlalu cepat membantu",
-    text: "Bukan anak tidak mampu; kadangkala orang dewasa terlalu cepat membantu lalu mengurangkan peluang mereka untuk belajar dan berkembang."
-  },
-  {
-    label: "Kepercayaan sebelum bantuan",
-    text: "Berikan lebih kepercayaan dan jangan terburu-buru membantu; dengan bimbingan dari sisi, murid mampu menyelesaikan tugasan sendiri."
-  },
-  {
-    label: "Pelepasan tanggungjawab beransur-ansur",
-    text: "Saya menyerahkan tanggungjawab kepada ibu bapa secara beransur-ansur; ibu bapa pula belajar memberi ruang kepada anak; akhirnya, anak mengambil kembali tanggungjawab terhadap pembelajarannya sendiri."
   },
   {
     label: "Daripada 5 kepada 11",
@@ -164,6 +138,11 @@ window.MALAY_SLIDES = [
   {
     label: "Tanggapan awal guru",
     text: "Bukan ibu bapa tidak mampu; kadangkala kita sebagai guru terlalu awal membuat anggapan bahawa mereka tidak mampu."
+  },
+  {
+    // ⚠️ DRAF AI — belum disemak. Slaid penutup baharu v4: 邀·讲·融.
+    label: "Tiga patah perkataan",
+    text: "Jika hanya tiga patah perkataan dibawa pulang hari ini—Jemput, Kongsi Matlamat, Padu: jemput tanpa menunggu ibu bapa menyuarakan diri; kongsikan matlamat pembelajaran dengan jelas; padukan aktiviti dalam kerangka DSKP yang sedia ada."
   },
   {
     label: "Soalan pertama",

@@ -77,7 +77,7 @@ window.MALAY_SLIDES = [
   {
     // ⚠️ DRAF AI — belum disemak.
     label: "Lihat dan tanya",
-    text: "Lihat—kekuatan ibu bapa yang sudah terserlah dalam buku latihan anak. Tanya—cukup dengan bertanya siapa yang boleh membantu, tanpa perlu menunggu nasib baik."
+    text: "Lihat—kekuatan ibu bapa yang sudah terserlah dalam komunikasi harian anda dengan mereka. Tanya—cukup dengan bertanya siapa yang boleh membantu, tanpa perlu menunggu nasib baik."
   },
   {
     label: "Langkah 2 · Matlamat bersama",

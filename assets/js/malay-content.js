@@ -1,15 +1,10 @@
 // Bahasa Melayu Malaysia, disemak berdasarkan laras rasmi DBP/KPM.
-// Index array ini mesti kekal sepadan dengan 39 slaid dalam index.html (v4).
-//
-// ⚠️ v4: entri #14, #16, #17, #33 (SdK, 邀 intro, 邀 看/问, 邀讲融总结)
-// adalah draf AI — Yong Quan perlu menyemak semula sebelum digunakan
-// secara langsung. Semua entri lain diwarisi terus daripada v3 (sudah
-// disemak), hanya kedudukan indeks yang berubah kerana beberapa slaid
-// v3 telah dibuang (方法三/重新命名, GRR 收束整段) atau ditambah.
+// Index array ini mesti kekal sepadan dengan 40 slaid dalam index.html (v4).
+// Semua entri telah disemak semula selepas penambahan montaj tiga foto.
 window.MALAY_SLIDES = [
   {
-    label: "Gagasan utama",
-    text: "Pelibatan ibu bapa bukan soal “kualiti” mereka; pelibatan boleh dibentuk melalui sistem yang direka oleh guru."
+    label: "Mudah untuk bermula",
+    text: "Sebenarnya, lebih mudah untuk bermula daripada yang anda sangkakan: bawa ibu bapa masuk ke kelas agar setiap murid diberi perhatian."
   },
   {
     label: "Titik permulaan",
@@ -37,7 +32,7 @@ window.MALAY_SLIDES = [
   },
   {
     label: "Gagasan pertama",
-    text: "Sama ada ibu bapa terlibat atau tidak bukan soal kualiti mereka; pelibatan boleh direka."
+    text: "Sama ada ibu bapa terlibat atau tidak bukanlah soal “kualiti” mereka; pelibatan itu boleh direka bentuk."
   },
   {
     label: "Gagasan kedua",
@@ -45,7 +40,7 @@ window.MALAY_SLIDES = [
   },
   {
     label: "Mengapa ibu bapa dibawa masuk",
-    text: "Pelibatan ibu bapa mengubah nisbah bimbingan daripada 1:35 kepada 1:5, lalu setiap murid lebih berpeluang untuk didengari, diberi respons dan diberi masa."
+    text: "Kehadiran ibu bapa mengubah nisbah orang dewasa kepada murid daripada 1:35 kepada 1:5, lalu setiap murid lebih berpeluang untuk didengari, diberi respons dan diberi masa."
   },
   {
     label: "Semua murid bersuara",
@@ -57,31 +52,31 @@ window.MALAY_SLIDES = [
   },
   {
     label: "Tiga langkah seterusnya",
-    text: "Tiga langkah ini menjadikan bantuan beberapa pasang tangan sebagai sebahagian daripada pedagogi, bukan bantuan sampingan."
+    text: "Tiga langkah ini menjadikan beberapa pasang tangan tambahan sebagai sebahagian daripada pedagogi, bukan sekadar bantuan sampingan."
   },
   {
-    // ⚠️ DRAF AI — belum disemak. Menggantikan 4 slaid v3 (kesahan/Pekeliling)
-    // yang kini dipadatkan menjadi 1 slaid ini + slaid Sarana Ibu Bapa.
     label: "Asas rasmi program ini",
-    text: "Amalan ini bukan ciptaan saya sendiri—ia dikenali sebagai SdK (Sukarelawan Di Dalam Kelas) di bawah SPI Bilangan 1/2018 KPM, dan masih dirujuk dalam Buku Pengurusan HEM sekolah pada 2024."
+    text: "Amalan ini dilaksanakan dalam kerangka rasmi KPM: SdK (Sukarelawan di dalam Kelas) digariskan dalam SPI Bilangan 1/2018 dan dilaksanakan dengan sokongan pentadbiran sekolah."
   },
   {
     label: "Sarana Ibu Bapa",
     text: "Semua manfaat pelibatan yang dihuraikan oleh Kementerian Pendidikan dinikmati oleh anak, bukan oleh guru."
   },
   {
-    // ⚠️ DRAF AI — belum disemak.
     label: "Langkah 1 · Jemput",
-    text: "Langkah pertama ialah mencari ibu bapa yang sudi hadir—bergantung kepada dua perkara sahaja."
+    text: "Untuk mengenal pasti ibu bapa yang sudi hadir, saya hanya berpandukan dua tindakan: perhati dan tanya."
   },
   {
-    // ⚠️ DRAF AI — belum disemak.
-    label: "Lihat dan tanya",
-    text: "Lihat—kekuatan ibu bapa yang sudah terserlah dalam komunikasi harian anda dengan mereka. Tanya—cukup dengan bertanya siapa yang boleh membantu, tanpa perlu menunggu nasib baik."
+    label: "Perhati dan tanya",
+    text: "Perhati kekuatan yang telah ditunjukkan oleh ibu bapa melalui komunikasi harian. Kemudian, tanya terus siapa yang boleh membantu—tanpa mengehadkannya kepada ibu bapa kelas sendiri."
   },
   {
-    label: "Langkah 2 · Matlamat bersama",
-    text: "Sebelum setiap aktiviti, jelaskan objektif pembelajaran—bukan sekadar mengagihkan tugasan."
+    label: "Semua orang berpotensi",
+    text: "Setiap orang yang anda kenali berpotensi untuk dilibatkan—sama ada dalam aktiviti menggentel tangyuan, fotografi mahupun seni lukis."
+  },
+  {
+    label: "Langkah 2 · Jelaskan matlamat",
+    text: "Sebelum setiap aktiviti, jelaskan matlamat pembelajaran bersama—bukan sekadar mengagihkan tugasan atau memberi arahan ketika aktiviti berlangsung."
   },
   {
     label: "Apabila matlamat jelas",
@@ -89,18 +84,18 @@ window.MALAY_SLIDES = [
   },
   {
     label: "Matlamat yang saling menguntungkan",
-    text: "Kerjasama rentas sempadan akan berkekalan apabila kedua-dua pihak memperoleh manfaat yang mereka perlukan."
+    text: "Kerjasama merentas sempadan akan berkekalan apabila kedua-dua pihak memperoleh manfaat yang diperlukan; ibu bapa mahu terlibat dalam pembelajaran anak, bukan sekadar disuruh membantu."
   },
   {
     label: "Suara ibu bapa",
     text: "Ibu bapa bukan berasa diri mereka menyusahkan guru; mereka bersyukur kerana terus diberi peluang untuk terlibat dalam pembelajaran anak."
   },
   {
-    label: "Jemputan membuka pintu",
+    label: "Rasa diundang",
     text: "Kadangkala bukan ibu bapa yang enggan hadir; pintu pelibatan tidak pernah benar-benar dibuka kepada mereka."
   },
   {
-    label: "Langkah 3 · Berpandu pada DSKP",
+    label: "Langkah 3 · Integrasikan",
     text: "Setiap aktiviti kekal dalam kerangka DSKP—bukan aktiviti tambahan di luar waktu pengajaran, tetapi kandungan yang sama diajarkan dengan cara yang berbeza."
   },
   {
@@ -108,8 +103,8 @@ window.MALAY_SLIDES = [
     text: "Ketika menghasilkan perisai bercahaya, murid sendiri berulang kali menyemak sama ada reka bentuk mereka simetri sebelum menyaksikan hasilnya bersinar."
   },
   {
-    label: "Tentang kelas yang kelam-kabut",
-    text: "Ya, kelas seperti ini masih boleh menjadi kelam-kabut. Pembelajaran yang hidup tidak semestinya sentiasa kelihatan teratur."
+    label: "Kelas tetap boleh riuh",
+    text: "Ya. Hingga hari ini pun, kelas seperti ini masih boleh menjadi kelam-kabut."
   },
   {
     label: "Suara ibu bapa",
@@ -140,9 +135,8 @@ window.MALAY_SLIDES = [
     text: "Bukan ibu bapa tidak mampu; kadangkala kita sebagai guru terlalu awal membuat anggapan bahawa mereka tidak mampu."
   },
   {
-    // ⚠️ DRAF AI — belum disemak. Slaid penutup baharu v4: 邀·讲·融.
-    label: "Tiga patah perkataan",
-    text: "Jika hanya tiga patah perkataan dibawa pulang hari ini—Jemput, Kongsi Matlamat, Padu: jemput tanpa menunggu ibu bapa menyuarakan diri; kongsikan matlamat pembelajaran dengan jelas; padukan aktiviti dalam kerangka DSKP yang sedia ada."
+    label: "Tiga kata utama",
+    text: "Jika hanya tiga kata dibawa pulang hari ini—Jemput: jangan tunggu ibu bapa menawarkan diri; Jelaskan: terangkan matlamat pembelajaran; Integrasikan: ajarkan kandungan DSKP dengan cara yang berbeza."
   },
   {
     label: "Soalan pertama",
@@ -150,7 +144,7 @@ window.MALAY_SLIDES = [
   },
   {
     label: "Soalan kedua",
-    text: "Dengan tambahan dua pasang tangan itu, bolehkah saya memberi ruang kepada murid untuk menyiapkan bahagian ini sendiri, bukannya saya yang melakukannya untuk mereka?"
+    text: "Dengan tambahan dua pasang tangan itu, bolehkah saya memberi ruang kepada murid untuk menyiapkan bahagian ini sendiri? Bantuan ini bukan untuk meringankan kerja saya, tetapi agar saya berani memberi murid lebih banyak ruang."
   },
   {
     label: "Penutup",

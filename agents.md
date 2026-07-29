@@ -31,11 +31,10 @@ Yong Quan（1I班主任、UTM课程与教学博士生）要在泰丰华小 lawat
 - [x] 新增 `.term-duo`（邀页 看/问两字并置）与 `.term-trio`（结尾邀讲融三字总结，glow渐层同 `.stat-hero` 数字量级）两个组件，见 `assets/css/style.css`
 - [x] 荧光盾牌揭晓：讲者点击触发（非自动倒数），实测两次点击行为正常
 - [x] 现场互动投票：Supabase即时星级评分（1-5分「你现在几分想回去试试看」），QR码用vendored qrcode.min.js生成，见下方Supabase章节
-- [x] 全部39张slide（v4，以index.html实际slide数为准；v3是47张）
-- [x] 马来文同步显示功能：讲者翻页写入Supabase，手机端自动跟页；`assets/js/malay-content.js` 已同步改成39条，其中4条（SdK/邀 intro/看问duo/邀讲融总结）是AI初稿，**Yong Quan需要校对再上线**
+- [x] 全部40张slide（v4，以index.html实际slide数为准；v3是47张）
+- [x] 马来文同步显示功能：讲者翻页写入Supabase，手机端自动跟页；`assets/js/malay-content.js` 已同步为40条，并于2026-07-29完成全套国文校对
 - [x] 叙事与版面细节：荧光盾牌页制作照→黑场→荧光成品照揭晓
 - [ ] Yong Quan预计还会持续给视觉反馈微调（padding、文字位置、动画细节），属正常迭代，不是遗漏
-- [ ] `assets/js/malay-content.js` 里标注「DRAF AI」的4条翻译需要Yong Quan本人校对
 
 ### 部署与基础设施
 - [x] GitHub repo已建立，Pages已开通（main分支根目录）
@@ -45,7 +44,7 @@ Yong Quan（1I班主任、UTM课程与教学博士生）要在泰丰华小 lawat
 ## 资料夹结构
 ```
 parent-partners-benchmarking/
-├── index.html              # 主deck，39张slide（v4），看顶部HTML注释了解排版规则
+├── index.html              # 主deck，40张slide（v4），看顶部HTML注释了解排版规则
 ├── assets/
 │   ├── css/style.css       # 设计token+全部组件样式
 │   ├── js/

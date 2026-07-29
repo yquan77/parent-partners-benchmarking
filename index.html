@@ -693,7 +693,7 @@
     width: 168, height: 168,
     colorDark: "#2E2419", colorLight: "#ffffff"
   });
-  var malayUrl = location.href.replace(/index\.html.*$/,"").replace(/\/$/,"") + "/my/";
+  var malayUrl = location.origin + deckDir + "/my/";
   new QRCode(document.getElementById("malay-qr-holder"), {
     text: malayUrl,
     width: 220, height: 220,

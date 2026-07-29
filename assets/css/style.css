@@ -1082,8 +1082,36 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .live-count{ font-family:var(--font-data); font-size:14px; color:var(--ink-soft); }
 
 /* ===================================================================
-   Optional Malay companion QR (press M; does not add another slide)
+   Optional Malay companion QR — persistent floating badge (bottom-left,
+   click to open the big overlay for scanning) + a press-M shortcut for
+   the presenter. Lives outside the slide flow on purpose, so it never
+   competes with slide content.
    =================================================================== */
+#malay-qr-fab{
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  z-index:45;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px 8px 8px;
+  border:0;
+  border-radius:100px;
+  background:#fff;
+  box-shadow:var(--paper-shadow);
+  cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease, visibility .18s ease;
+}
+#malay-qr-fab:hover{ transform:translateY(-2px); box-shadow:0 18px 40px rgba(0,0,0,.22); }
+#malay-qr-fab-holder{ width:44px; height:44px; border-radius:8px; overflow:hidden; line-height:0; }
+#malay-qr-fab-holder canvas,#malay-qr-fab-holder img{ display:block; width:44px; height:44px; }
+#malay-qr-fab span{
+  font-family:var(--font-data); font-weight:800; font-size:11px; letter-spacing:.06em;
+  color:#0B1E2D;
+}
+body.malay-qr-open #malay-qr-fab{ opacity:0; visibility:hidden; pointer-events:none; }
+
 #malay-qr-overlay{
   position:fixed;
   inset:0;

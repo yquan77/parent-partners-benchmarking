@@ -616,7 +616,7 @@
   <section class="slide slide--center" data-role="live-results">
     <div class="slide-inner">
       <div class="eyebrow anim">现场互动</div>
-      <p class="lead lead--sm anim d1">听完这些，你现在几分想回去试试看？</p>
+      <p class="lead lead--sm anim d1">如果满分5分，你现在有多想回去试试看？</p>
       <div class="anim d2" style="display:flex; gap:56px; align-items:center; justify-content:center; margin-top:44px; flex-wrap:wrap;">
         <div class="qr-card">
           <div id="qr-holder"></div>
@@ -656,6 +656,11 @@
 
 </div>
 
+<button id="malay-qr-fab" type="button" aria-haspopup="dialog" aria-label="打开马来文对照二维码">
+  <div id="malay-qr-fab-holder"></div>
+  <span>BM</span>
+</button>
+
 <div id="malay-qr-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="malay-qr-title">
   <div class="malay-qr-panel">
     <button id="malay-qr-close" type="button" aria-label="关闭马来文对照二维码">×</button>
@@ -688,9 +693,15 @@
     width: 168, height: 168,
     colorDark: "#2E2419", colorLight: "#ffffff"
   });
+  var malayUrl = location.href.replace(/index\.html.*$/,"").replace(/\/$/,"") + "/my/";
   new QRCode(document.getElementById("malay-qr-holder"), {
-    text: location.href.replace(/index\.html.*$/,"").replace(/\/$/,"") + "/my/",
+    text: malayUrl,
     width: 220, height: 220,
+    colorDark: "#0B1E2D", colorLight: "#ffffff"
+  });
+  new QRCode(document.getElementById("malay-qr-fab-holder"), {
+    text: malayUrl,
+    width: 44, height: 44,
     colorDark: "#0B1E2D", colorLight: "#ffffff"
   });
 </script>

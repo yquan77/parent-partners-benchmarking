@@ -257,8 +257,10 @@
     const open = typeof force === "boolean" ? force : !isMalayQrOpen();
     malayQrOverlay.classList.toggle("open", open);
     malayQrOverlay.setAttribute("aria-hidden", String(!open));
+    document.body.classList.toggle("malay-qr-open", open);
   }
   document.getElementById("malay-qr-close")?.addEventListener("click", () => toggleMalayQr(false));
+  document.getElementById("malay-qr-fab")?.addEventListener("click", () => toggleMalayQr(true));
   malayQrOverlay?.addEventListener("click", (e) => {
     if (e.target === malayQrOverlay) toggleMalayQr(false);
   });

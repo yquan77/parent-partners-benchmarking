@@ -272,6 +272,16 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .slide.dark .source-note{ color:#9D927D; }
 .source-note--center{ text-align:left; }
 
+/* source-note is normally pinned to the page bottom, but the .top photo
+   variant already uses the bottom for the photo's own subject — pinning
+   the citation there too makes it collide with whatever text sits above
+   it in the top content flow. Let it flow normally instead, right under
+   the rest of the top content. */
+.slide.photo-bg.top .content .source-note{
+  position:static; bottom:auto; left:auto; right:auto;
+  margin-top:10px; max-width:none;
+}
+
 .references-slide .slide-inner{ max-width:min(1240px,88vw); }
 .references-title{
   margin:0 0 30px;

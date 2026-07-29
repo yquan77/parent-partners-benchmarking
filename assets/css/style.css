@@ -272,15 +272,17 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
 .slide.dark .source-note{ color:#9D927D; }
 .source-note--center{ text-align:left; }
 
-/* source-note is normally pinned to the page bottom, but the .top photo
-   variant already uses the bottom for the photo's own subject — pinning
-   the citation there too makes it collide with whatever text sits above
-   it in the top content flow. Let it flow normally instead, right under
-   the rest of the top content. */
-.slide.photo-bg.top .content .source-note{
-  position:static; bottom:auto; left:auto; right:auto;
-  margin-top:10px; max-width:none;
-}
+/* source-note keeps the deck-wide rule of always pinning to the page
+   bottom. On bottom-anchored photo slides that "just works" because
+   .content itself already sits flush at the bottom (flex-end), so its
+   own box height roughly matches where the footnote should land. The
+   .top variant flips .content to flex-start (top), which shrinks its
+   box to only the height of the text — so an absolutely-positioned
+   bottom:Npx inside THAT short box lands near the top content instead
+   of the true bottom of the frame. Fix: stretch .content to the full
+   slide height in .top mode, so "bottom" resolves against the whole
+   frame again, same as everywhere else. */
+.slide.photo-bg.top .content{ height:100%; }
 
 .references-slide .slide-inner{ max-width:min(1240px,88vw); }
 .references-title{

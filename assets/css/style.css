@@ -445,33 +445,33 @@ h1,h2,h3{ font-weight:700; line-height:1.25; }
        different kinds of people got invited" at a glance — whichever
        1-2 the speaker actually narrates out loud is chosen live, so
        don't add per-photo captions beyond a tiny corner label. --------- */
-.photo-trio{ position:absolute; inset:0; display:flex; gap:3px; padding:3px; }
-.photo-trio .trio-cell{
-  position:relative; flex:1 1 33.33%; overflow:hidden; border-radius:4px;
+.photo-trio{ position:absolute; top:3px; left:3px; right:3px; bottom:96px; display:flex; gap:3px; }
+.photo-trio .montage-cell{
+  position:relative; flex:1 1 0; min-width:0; overflow:hidden; border-radius:4px;
   background-size:cover; background-position:center;
   transform:scale(1.05) translateY(10px); opacity:0;
 }
-.slide.active .photo-trio .trio-cell{
+.slide.active .photo-trio .montage-cell{
   animation:trioIn .8s cubic-bezier(.16,1,.3,1) forwards;
 }
-.photo-trio .trio-cell:nth-child(1){ animation-delay:.1s; }
-.photo-trio .trio-cell:nth-child(2){ animation-delay:.24s; }
-.photo-trio .trio-cell:nth-child(3){ animation-delay:.38s; }
+.photo-trio .montage-cell:nth-child(1){ animation-delay:.1s; }
+.photo-trio .montage-cell:nth-child(2){ animation-delay:.24s; }
+.photo-trio .montage-cell:nth-child(3){ animation-delay:.38s; }
 @keyframes trioIn{
   from{ opacity:0; transform:scale(1.05) translateY(10px); }
   to  { opacity:1; transform:scale(1)    translateY(0); }
 }
-.photo-trio .trio-cell::after{
+.photo-trio .montage-cell::after{
   content:''; position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(14,10,5,0) 55%, rgba(14,10,5,.72) 100%);
+  background:linear-gradient(180deg, rgba(14,10,5,0) 45%, rgba(14,10,5,.82) 100%);
 }
-.photo-trio .trio-tag{
+.photo-trio .montage-tag{
   position:absolute; bottom:14px; left:0; right:0; z-index:2; text-align:center;
   font-family:var(--font-data); font-weight:700; font-size:12.5px; letter-spacing:.04em;
   color:#fff;
 }
 .photo-trio-caption{
-  position:absolute; top:var(--slide-pad); left:0; right:0; z-index:3; text-align:center;
+  position:absolute; bottom:32px; left:0; right:0; z-index:3; text-align:center;
   padding:0 var(--slide-pad);
 }
 

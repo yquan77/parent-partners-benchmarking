@@ -14,7 +14,7 @@ HTML slide deck目前共40页，主要内容、真实照片、马来文实时跟
 - ✅ v1初版讲稿（19页四招式版本）已从最早commit `80387e6` 还原，归档在 `archive/讲稿要点_v1_2026-07-27.md`；v3归档在 `benchmarking-slot/archive/`
 - ✅ 原始素材（3年活动记录、家长心得全文）确认完整无缺，存放在 `~/Documents/UTM/IBSDK-Research/`，与slide deck各自独立
 - ⏳ 马来文翻译治理机制尚未实施：永久slide ID、翻译状态锁、中文指纹、双语并排审核、commit前自动检查
-- ⏳ 本次交接文件变更待commit并push至 `main`
+- ✅ 本次交接文件已commit并push至 `main`
 - ⚠️ 上台前必须到Supabase SQL editor执行 `delete from confidence_ratings;`，清除测试投票
 
 ## ➡️ 下一步
@@ -34,4 +34,4 @@ HTML slide deck目前共40页，主要内容、真实照片、马来文实时跟
 
 ## 🕐 最后更新
 
-2026-07-30 ｜ Codex @ mr007s-Macbook-Air.local｜Git push：⏳ 待推
+2026-07-30 ｜ Codex @ mr007s-Macbook-Air.local｜Git push：✅ 已推
